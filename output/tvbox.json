@@ -1,7 +1,7 @@
 {
   "name": "社区苹果CMS采集源(每日实测)",
-  "notes": "检测时间 2026-11-19T06:50:40.019Z，共 20 个实测可用接口。仅供学习研究，请勿商用。",
-  "updated": "2026-11-19T06:50:40.019Z",
+  "notes": "检测时间 2026-11-19T08:02:03.742Z，共 21 个实测可用接口。仅供学习研究，请勿商用。",
+  "updated": "2026-11-19T08:02:03.742Z",
   "sites": [
     {
       "key": "s1",
@@ -14,24 +14,6 @@
     },
     {
       "key": "s2",
-      "name": "暴风资源",
-      "type": 1,
-      "api": "https://bfzyapi.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s3",
-      "name": "量子资源",
-      "type": 1,
-      "api": "https://cj.lziapi.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s4",
       "name": "无尽资源",
       "type": 1,
       "api": "https://api.wujinapi.com/api.php/provide/vod",
@@ -40,16 +22,7 @@
       "filterable": 1
     },
     {
-      "key": "s5",
-      "name": "素博资源",
-      "type": 1,
-      "api": "https://subocaiji.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s6",
+      "key": "s3",
       "name": "红牛资源",
       "type": 1,
       "api": "https://www.hongniuzy2.com/api.php/provide/vod",
@@ -58,7 +31,7 @@
       "filterable": 1
     },
     {
-      "key": "s7",
+      "key": "s4",
       "name": "豪华资源",
       "type": 1,
       "api": "https://hhzyapi.com/api.php/provide/vod",
@@ -67,7 +40,7 @@
       "filterable": 1
     },
     {
-      "key": "s8",
+      "key": "s5",
       "name": "极速资源",
       "type": 1,
       "api": "https://jszyapi.com/api.php/provide/vod",
@@ -76,16 +49,7 @@
       "filterable": 1
     },
     {
-      "key": "s9",
-      "name": "非凡资源",
-      "type": 1,
-      "api": "https://cj.ffzyapi.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s10",
+      "key": "s6",
       "name": "魔都资源",
       "type": 1,
       "api": "https://caiji.moduapi.cc/api.php/provide/vod",
@@ -94,34 +58,16 @@
       "filterable": 1
     },
     {
-      "key": "s11",
-      "name": "如意资源",
+      "key": "s7",
+      "name": "百度资源",
       "type": 1,
-      "api": "https://cj.rycjapi.com/api.php/provide/vod",
+      "api": "https://api.apibdzy.com/api.php/provide/vod",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1
     },
     {
-      "key": "s12",
-      "name": "电影天堂资源",
-      "type": 1,
-      "api": "https://caiji.dyttzyapi.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s13",
-      "name": "U酷资源",
-      "type": 1,
-      "api": "https://api.ukuapi.com/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s14",
+      "key": "s8",
       "name": "360采集",
       "type": 1,
       "api": "https://360zy.com/api.php/provide/vod",
@@ -130,34 +76,7 @@
       "filterable": 1
     },
     {
-      "key": "s15",
-      "name": "无尽采集",
-      "type": 1,
-      "api": "https://api.wujinapi.net/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s16",
-      "name": "无尽采集2",
-      "type": 1,
-      "api": "https://api.wujinapi.me/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s17",
-      "name": "新浪采集",
-      "type": 1,
-      "api": "https://api.xinlangapi.com/xinlangapi.php/provide//vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s18",
+      "key": "s9",
       "name": "ckzy采集",
       "type": 1,
       "api": "https://ckzy.me/api.php/provide/vod",
@@ -166,7 +85,7 @@
       "filterable": 1
     },
     {
-      "key": "s19",
+      "key": "s10",
       "name": "新4K采集",
       "type": 1,
       "api": "http://cmsyun2.qijiyun.vip/api.php/provide/vod",
@@ -175,10 +94,100 @@
       "filterable": 1
     },
     {
-      "key": "s20",
+      "key": "s11",
       "name": "非凡资源",
       "type": 1,
       "api": "https://api.ffzyapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s12",
+      "name": "影视 | 非凡[直连]",
+      "type": 1,
+      "api": "http://ffzy.tv/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s13",
+      "name": "🍀┃非凡┃资源",
+      "type": 1,
+      "api": "http://ffzy5.tv/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s14",
+      "name": "金鹰┃资源",
+      "type": 1,
+      "api": "https://jyzyapi.com/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s15",
+      "name": "速播┃资源",
+      "type": 1,
+      "api": "https://subocj.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s16",
+      "name": "猫眼┃资源",
+      "type": 1,
+      "api": "https://api.maoyanapi.top/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s17",
+      "name": "暴风┃资源",
+      "type": 1,
+      "api": "https://bfzy2.tv/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s18",
+      "name": "共共┃青春",
+      "type": 1,
+      "api": "https://gqc4.top/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s19",
+      "name": "麒麟┃影音",
+      "type": 1,
+      "api": "https://www.qlys.cc/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s20",
+      "name": "🥬魔都资源",
+      "type": 1,
+      "api": "https://www.mdzyapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s21",
+      "name": "🥬最大资源",
+      "type": 1,
+      "api": "https://api.zuidapi.com/api.php/provide/vod",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1

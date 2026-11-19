@@ -33,6 +33,59 @@
       "comment": "8.2k star 的 TVBox 配置仓库，提取其中 type=1 的标准接口"
     },
     {
+      "name": "xiaoma",
+      "url": "https://szyyds.cn/tv/x.json",
+      "format": "tvbox_sites",
+      "comment": "小马接口（62站，含15个苹果CMS接口，2026-11-19实测）"
+    },
+    {
+      "name": "eryuehong",
+      "url": "https://700sjro44343.vicp.fun/eggp/0211/tv.json",
+      "format": "tvbox_sites",
+      "comment": "二月红接口（31站，含1个苹果CMS接口，2026-11-19实测）"
+    },
+    {
+      "name": "qiezi",
+      "url": "https://700sjro44343.vicp.fun/eggp/qzku/tv.json",
+      "format": "tvbox_sites",
+      "comment": "茄子接口（31站，含1个苹果CMS接口，2026-11-19实测）"
+    },
+    {
+      "name": "canglan",
+      "url": "http://xn--6orr3pi6g9uu.top",
+      "ua": "okhttp/4.9.3",
+      "format": "tvbox_sites",
+      "comment": "苍蓝接口（77站，含28个苹果CMS接口，需TVBox UA，2026-11-19实测）"
+    },
+    {
+      "name": "fengdou",
+      "url": "http://枫斗.top/tv",
+      "ua": "okhttp/4.9.3",
+      "format": "tvbox_sites",
+      "comment": "枫斗接口（198站，含12个苹果CMS接口，需TVBox UA；TVBox端可能要求激活码5678，2026-11-19实测）"
+    },
+    {
+      "name": "uuccc",
+      "url": "http://xn--5mqx81b535a.com",
+      "ua": "okhttp/4.9.3",
+      "format": "tvbox_sites",
+      "comment": "UUCCC接口（31站，含1个苹果CMS接口，需TVBox UA，2026-11-19实测）"
+    },
+    {
+      "name": "yingshicang",
+      "url": "http://影视仓.com/",
+      "ua": "okhttp/4.9.3",
+      "format": "tvbox_sites",
+      "comment": "影视仓接口（31站，含1个苹果CMS接口，需TVBox UA，2026-11-19实测）"
+    },
+    {
+      "name": "cainisi",
+      "url": "https://tv.菜妮丝.top",
+      "ua": "okhttp/4.9.3",
+      "format": "tvbox_sites",
+      "comment": "菜妮丝接口（37站，含1个苹果CMS接口，需TVBox UA，2026-11-19实测）"
+    },
+    {
       "name": "moyu-er-top",
       "url": "http://我不是.摸鱼儿.top",
       "format": "tvbox_sites",

@@ -18,6 +18,13 @@
 | 配置 | 地址 | 实测状态 |
 |---|---|---|
 | newwex 爬虫聚合（100 站：豆瓣推荐/网盘/玩偶4K/蜡笔/闪电等） | `https://9280.kstore.vip/newwex.json` | ✅ 2026-11-19 实测：配置可达、spider jar 有效（伪装 jpg，PK头验证通过） |
+| wex 爬虫聚合（100 站） | `https://9280.kstore.vip/wex.json` | ✅ 2026-11-19 实测：配置可达、jar 有效 |
+| 凯速 fish 爬虫聚合（111 站） | `https://6800.kstore.vip/fish.json` | ✅ 2026-11-19 实测：配置可达、jar 有效 |
+| 王二小放牛娃（100 站） | `http://tvbox.王二小放牛娃.top` | ✅ 2026-11-19 实测：需 okhttp UA |
+| 王二小备用（100 站） | `http://tv.999888987.xyz/` | ✅ 2026-11-19 实测：需 okhttp UA |
+| iyouhun 影魂（100 站） | `https://www.iyouhun.com/tv/wex` | ✅ 2026-11-19 实测：需 okhttp UA |
+| 动漫专用聚合（27 站） | `https://www.yingm.cc/dm/dm.json` | ✅ 2026-11-19 实测：配置可达、jar 有效 |
+| 俊佬 top98（24 站） | `http://home.jundie.top:81/top98.json` | ✅ 2026-11-19 实测：配置可达、jar 有效 |
 
 > 收录标准：配置 JSON 可拉取、jar 可下载。爬虫源的实际可用性随 jar 与上游网站变化，无法逐个 HTTP 探测。
 
@@ -42,8 +49,18 @@
 | tvbox-config | muzheya/tvbox-config（GitHub 仓库） | tvbox_sites（纯API采集配置） |
 | tvbox-sub | efefsdwd/tvbox-sub（GitHub 仓库） | tvbox_sites（TVBox 订阅） |
 | gao-0825 | gaotianliuyun/gao（GitHub 仓库） | tvbox_sites（8.2k star TVBox 配置，提取 type=1） |
+| xiaoma | `https://szyyds.cn/tv/x.json`（直接 URL） | tvbox_sites（62 站，含 15 个苹果CMS接口） |
+| eryuehong | `https://700sjro44343.vicp.fun/eggp/0211/tv.json`（直接 URL） | tvbox_sites（31 站） |
+| qiezi | `https://700sjro44343.vicp.fun/eggp/qzku/tv.json`（直接 URL） | tvbox_sites（31 站） |
+| canglan | `http://苍蓝.top`（直接 URL，`ua: okhttp/4.9.3`） | tvbox_sites（77 站，含 28 个苹果CMS接口） |
+| fengdou | `http://枫斗.top/tv`（直接 URL，`ua: okhttp/4.9.3`） | tvbox_sites（198 站，含 12 个苹果CMS接口） |
+| uuccc | UUCCC 接口（直接 URL，`ua: okhttp/4.9.3`） | tvbox_sites（31 站） |
+| yingshicang | `http://影视仓.com/`（直接 URL，`ua: okhttp/4.9.3`） | tvbox_sites（31 站） |
+| cainisi | `https://tv.菜妮丝.top`（直接 URL，`ua: okhttp/4.9.3`） | tvbox_sites（37 站） |
 | moyu-er-top | `http://我不是.摸鱼儿.top`（直接 URL） | tvbox_sites（摸鱼儿聚合配置，域名失效中，恢复后自动纳入） |
 | moyu-er-com | `http://我不是.摸鱼儿.com`（直接 URL） | tvbox_sites（摸鱼儿备用域名，同上） |
+
+> 部分接口站按 User-Agent 鉴别客户端：仅对 TVBox(okhttp) UA 返回 JSON，浏览器 UA 只得到 HTML 入口页。此类上游在配置中加 `"ua": "okhttp/4.9.3"` 即可。
 
 上游支持两种类型：
 

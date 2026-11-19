@@ -116,7 +116,9 @@ async function fetchUpstreamRaw(up) {
     // 直接 URL 上游：任意 HTTP(S) 配置地址（如 TVBox 接口），中文域名自动转 punycode
     if (up.url) {
         const url = new URL(up.url).href; // WHATWG URL 自动处理 IDN→punycode
-        const { ok, status, text } = await fetchWithTimeout(url, { timeout: 20000 });
+        // 部分接口站按 UA 鉴别客户端：仅对 TVBox(okhttp) UA 返回 JSON，浏览器 UA 得到 HTML 入口页
+        const headers = up.ua ? { 'User-Agent': up.ua } : {};
+        const { ok, status, text } = await fetchWithTimeout(url, { timeout: 20000, headers });
         if (ok && text) return text;
         throw new Error(`URL 获取失败 HTTP ${status}: ${up.url}`);
     }
@@ -341,7 +343,9 @@ function buildOutputs(results) {
         r.status === 'no_play_url' ? '⚠️ 无播放地址' :
         r.status === 'invalid' ? '❌ 格式异常' : '❌ 不可达';
       const play = r.playCheck === 'ok' ? '✅' : r.playCheck === 'skipped' ? '—' : `❌ ${r.playCheck}`;
-      return `| ${badge} | ${r.name} | \`${r.api}\` | ${r.total ?? '-'} | ${r.searchMs ?? '-'}ms | ${play} | ${r.upstream} |`;
+      // 转义名称/字段中的 | 与换行，避免破坏 Markdown 表格
+      const esc = s => String(s ?? '').replace(/\|/g, '\\|').replace(/[\r\n]+/g, ' ');
+      return `| ${badge} | ${esc(r.name)} | \`${esc(r.api)}\` | ${r.total ?? '-'} | ${r.searchMs ?? '-'}ms | ${play} | ${esc(r.upstream)} |`;
     })
     .join('\n');
   const report =
