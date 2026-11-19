@@ -1,0 +1,60 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch: # 手动触发
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - 'sources/**'
+      - '.github/workflows/apk-build.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: 运行每日源检测（生成 APK 内置的最新可用源）
+        continue-on-error: true # 检测失败时使用仓库中已提交的产物
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node sources/checker.mjs --timeout 12000
+
+      - name: 下载并解压 LibreTV 前端
+        run: |
+          curl -sSL -o /tmp/libretv.zip https://codeload.github.com/lzfweb/LibreTV/zip/refs/heads/main
+          unzip -q -o /tmp/libretv.zip -d /tmp/libretv-src
+          LIBRETV_SRC=$(find /tmp/libretv-src -maxdepth 1 -type d | tail -1)
+          echo "LIBRETV_SRC=$LIBRETV_SRC" >> "$GITHUB_ENV"
+          echo "前端源码: $LIBRETV_SRC"
+
+      - name: 准备 APK assets（应用适配 + 注入最新源）
+        run: node android/prep-assets.mjs --src "$LIBRETV_SRC" --out android/assets --customer output/libretv_customer_site.js
+
+      - name: 构建 APK
+        run: bash android/build.sh
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: LibreTV-apk
+          path: |
+            android/build/LibreTV.apk
+            android/build/debug.keystore
+          if-no-files-found: error
