@@ -1,13 +1,13 @@
 {
-  "updated": "2026-11-19T06:26:58.574Z",
-  "mode": "standard",
+  "updated": "2026-11-19T06:32:10.981Z",
+  "mode": "full",
   "summary": {
     "total": 32,
-    "ok": 11,
-    "searchEmpty": 9,
+    "ok": 20,
+    "searchEmpty": 7,
     "noPlayUrl": 0,
     "invalid": 0,
-    "unreachable": 12
+    "unreachable": 5
   },
   "results": [
     {
@@ -18,50 +18,52 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 18,
       "sampleName": "三体与刘慈欣",
-      "searchMs": 306,
-      "playCheck": "skipped",
+      "searchMs": 648,
+      "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:35.356Z",
+      "checkedAt": "2026-11-19T06:31:46.971Z",
       "key": "juliang"
     },
     {
       "name": "暴风资源",
       "api": "https://bfzyapi.com/api.php/provide/vod",
       "upstream": "applecms-sources",
-      "status": "unreachable",
-      "reason": "列表接口失败(超时)",
-      "total": null,
-      "sampleName": "",
-      "searchMs": null,
-      "playCheck": "skipped",
+      "status": "ok",
+      "reason": "搜索/详情/播放地址均正常",
+      "total": 1000,
+      "sampleName": "三体真人版",
+      "searchMs": 721,
+      "playCheck": "fail(HTTP 404)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:35.359Z"
+      "checkedAt": "2026-11-19T06:31:46.973Z",
+      "key": "bfzyapi"
     },
     {
       "name": "量子资源",
       "api": "https://cj.lziapi.com/api.php/provide/vod",
       "upstream": "applecms-sources",
-      "status": "unreachable",
-      "reason": "列表接口失败(ECONNRESET)",
-      "total": null,
-      "sampleName": "",
-      "searchMs": null,
-      "playCheck": "skipped",
+      "status": "ok",
+      "reason": "搜索/详情/播放地址均正常",
+      "total": 1000,
+      "sampleName": "三体2023",
+      "searchMs": 358,
+      "playCheck": "fail(HTTP 404)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:35.361Z"
+      "checkedAt": "2026-11-19T06:31:46.975Z",
+      "key": "lziapi"
     },
     {
       "name": "索尼资源",
       "api": "https://suoniapi.com/api.php/provide/vod",
       "upstream": "applecms-sources",
-      "status": "unreachable",
-      "reason": "列表接口失败(超时)",
+      "status": "search_empty",
+      "reason": "搜索失败(Unexpected token '暂', \"暂不支持搜索\" is not valid JSON)",
       "total": null,
       "sampleName": "",
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:35.363Z"
+      "checkedAt": "2026-11-19T06:31:46.976Z"
     },
     {
       "name": "闪电资源",
@@ -74,7 +76,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": true,
-      "checkedAt": "2026-11-19T06:26:35.365Z"
+      "checkedAt": "2026-11-19T06:31:46.977Z"
     },
     {
       "name": "无尽资源",
@@ -84,10 +86,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 6,
       "sampleName": "三体第一季",
-      "searchMs": 185,
-      "playCheck": "skipped",
+      "searchMs": 238,
+      "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:35.367Z",
+      "checkedAt": "2026-11-19T06:31:46.978Z",
       "key": "wujinapi"
     },
     {
@@ -101,24 +103,11 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:35.368Z"
+      "checkedAt": "2026-11-19T06:31:46.979Z"
     },
     {
       "name": "金鹰资源",
       "api": "http://jyzyapi.com/api.php/provide/vod",
-      "upstream": "applecms-sources",
-      "status": "search_empty",
-      "reason": "搜索失败(HTTP 403)",
-      "total": null,
-      "sampleName": "",
-      "searchMs": null,
-      "playCheck": "skipped",
-      "insecure": true,
-      "checkedAt": "2026-11-19T06:26:35.370Z"
-    },
-    {
-      "name": "素博资源",
-      "api": "https://subocaiji.com/api.php/provide/vod",
       "upstream": "applecms-sources",
       "status": "unreachable",
       "reason": "列表接口失败(超时)",
@@ -126,8 +115,22 @@
       "sampleName": "",
       "searchMs": null,
       "playCheck": "skipped",
+      "insecure": true,
+      "checkedAt": "2026-11-19T06:31:46.980Z"
+    },
+    {
+      "name": "素博资源",
+      "api": "https://subocaiji.com/api.php/provide/vod",
+      "upstream": "applecms-sources",
+      "status": "ok",
+      "reason": "搜索/详情/播放地址均正常",
+      "total": 10,
+      "sampleName": "我的三体 第四季",
+      "searchMs": 259,
+      "playCheck": "fail(UND_ERR_CONNECT_TIMEOUT)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:35.513Z"
+      "checkedAt": "2026-11-19T06:31:47.891Z",
+      "key": "subocaiji"
     },
     {
       "name": "红牛资源",
@@ -137,10 +140,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 10,
       "sampleName": "三体",
-      "searchMs": 467,
-      "playCheck": "skipped",
+      "searchMs": 173,
+      "playCheck": "fail(UND_ERR_CONNECT_TIMEOUT)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:36.434Z",
+      "checkedAt": "2026-11-19T06:31:47.943Z",
       "key": "hongniuzy2"
     },
     {
@@ -151,10 +154,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 10,
       "sampleName": "我的三体 第四季",
-      "searchMs": 437,
-      "playCheck": "skipped",
+      "searchMs": 250,
+      "playCheck": "fail(UND_ERR_CONNECT_TIMEOUT)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:36.869Z",
+      "checkedAt": "2026-11-19T06:31:48.762Z",
       "key": "hhzyapi"
     },
     {
@@ -168,7 +171,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:36.922Z"
+      "checkedAt": "2026-11-19T06:31:49.511Z"
     },
     {
       "name": "极速资源",
@@ -178,24 +181,25 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 7,
       "sampleName": "我的三体 第四季",
-      "searchMs": 407,
-      "playCheck": "skipped",
+      "searchMs": 142,
+      "playCheck": "fail(ENOTFOUND)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:36.960Z",
+      "checkedAt": "2026-11-19T06:31:49.711Z",
       "key": "jszyapi"
     },
     {
       "name": "非凡资源",
       "api": "https://cj.ffzyapi.com/api.php/provide/vod",
       "upstream": "applecms-sources",
-      "status": "unreachable",
-      "reason": "列表接口失败(ECONNRESET)",
-      "total": null,
-      "sampleName": "",
-      "searchMs": null,
-      "playCheck": "skipped",
+      "status": "ok",
+      "reason": "搜索/详情/播放地址均正常",
+      "total": 3,
+      "sampleName": "三体第一季",
+      "searchMs": 84,
+      "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:37.655Z"
+      "checkedAt": "2026-11-19T06:31:50.100Z",
+      "key": "ffzyapi"
     },
     {
       "name": "魔都资源",
@@ -205,37 +209,39 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 3,
       "sampleName": "三体修大闹西方魔法学院",
-      "searchMs": 1411,
-      "playCheck": "skipped",
+      "searchMs": 170,
+      "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:37.657Z",
+      "checkedAt": "2026-11-19T06:31:50.171Z",
       "key": "moduapi"
     },
     {
       "name": "如意资源",
       "api": "https://cj.rycjapi.com/api.php/provide/vod",
       "upstream": "applecms-sources",
-      "status": "unreachable",
-      "reason": "列表接口失败(ECONNRESET)",
-      "total": null,
-      "sampleName": "",
-      "searchMs": null,
-      "playCheck": "skipped",
+      "status": "ok",
+      "reason": "搜索/详情/播放地址均正常",
+      "total": 7,
+      "sampleName": "三体剧版",
+      "searchMs": 399,
+      "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:38.545Z"
+      "checkedAt": "2026-11-19T06:31:50.223Z",
+      "key": "rycjapi"
     },
     {
       "name": "电影天堂资源",
       "api": "https://caiji.dyttzyapi.com/api.php/provide/vod",
       "upstream": "applecms-sources",
-      "status": "unreachable",
-      "reason": "列表接口失败(ECONNRESET)",
-      "total": null,
-      "sampleName": "",
-      "searchMs": null,
-      "playCheck": "skipped",
+      "status": "ok",
+      "reason": "搜索/详情/播放地址均正常",
+      "total": 2,
+      "sampleName": "三体2023",
+      "searchMs": 81,
+      "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:38.661Z"
+      "checkedAt": "2026-11-19T06:31:51.318Z",
+      "key": "dyttzyapi"
     },
     {
       "name": "天涯资源",
@@ -248,34 +254,34 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:38.698Z"
+      "checkedAt": "2026-11-19T06:31:51.500Z"
     },
     {
       "name": "U酷资源",
       "api": "https://api.ukuapi.com/api.php/provide/vod",
       "upstream": "applecms-sources",
-      "status": "unreachable",
-      "reason": "列表接口失败(超时)",
-      "total": null,
-      "sampleName": "",
-      "searchMs": null,
-      "playCheck": "skipped",
+      "status": "ok",
+      "reason": "搜索/详情/播放地址均正常",
+      "total": 5,
+      "sampleName": "三体 第一季",
+      "searchMs": 117,
+      "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:39.048Z"
+      "checkedAt": "2026-11-19T06:31:52.195Z",
+      "key": "ukuapi"
     },
     {
       "name": "百度资源",
       "api": "https://api.apibdzy.com/api.php/provide/vod",
       "upstream": "applecms-sources",
-      "status": "ok",
-      "reason": "搜索/详情/播放地址均正常",
-      "total": 3,
-      "sampleName": "我的三体第四季",
-      "searchMs": 4569,
+      "status": "unreachable",
+      "reason": "列表接口失败(HTTP 403)",
+      "total": null,
+      "sampleName": "",
+      "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:39.063Z",
-      "key": "apibdzy"
+      "checkedAt": "2026-11-19T06:31:53.479Z"
     },
     {
       "name": "360采集",
@@ -285,37 +291,39 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 6,
       "sampleName": "三体",
-      "searchMs": 425,
-      "playCheck": "skipped",
+      "searchMs": 448,
+      "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:39.999Z",
+      "checkedAt": "2026-11-19T06:31:53.522Z",
       "key": "360zy"
     },
     {
       "name": "无尽采集",
       "api": "https://api.wujinapi.net/api.php/provide/vod",
       "upstream": "tvbox-config",
-      "status": "search_empty",
-      "reason": "搜索失败(HTTP 403)",
-      "total": null,
-      "sampleName": "",
-      "searchMs": null,
-      "playCheck": "skipped",
+      "status": "ok",
+      "reason": "搜索/详情/播放地址均正常",
+      "total": 6,
+      "sampleName": "三体第一季",
+      "searchMs": 131,
+      "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:41.255Z"
+      "checkedAt": "2026-11-19T06:31:53.588Z",
+      "key": "wujinapi2"
     },
     {
       "name": "无尽采集2",
       "api": "https://api.wujinapi.me/api.php/provide/vod",
       "upstream": "tvbox-config",
-      "status": "search_empty",
-      "reason": "搜索失败(HTTP 403)",
-      "total": null,
-      "sampleName": "",
-      "searchMs": null,
-      "playCheck": "skipped",
+      "status": "ok",
+      "reason": "搜索/详情/播放地址均正常",
+      "total": 6,
+      "sampleName": "三体第一季",
+      "searchMs": 163,
+      "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:41.514Z"
+      "checkedAt": "2026-11-19T06:31:54.295Z",
+      "key": "wujinapi3"
     },
     {
       "name": "光速采集",
@@ -328,20 +336,21 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:41.699Z"
+      "checkedAt": "2026-11-19T06:31:54.342Z"
     },
     {
       "name": "新浪采集",
       "api": "https://api.xinlangapi.com/xinlangapi.php/provide//vod",
       "upstream": "tvbox-config",
-      "status": "unreachable",
-      "reason": "列表接口失败(超时)",
-      "total": null,
-      "sampleName": "",
-      "searchMs": null,
-      "playCheck": "skipped",
+      "status": "ok",
+      "reason": "搜索/详情/播放地址均正常",
+      "total": 10,
+      "sampleName": "我的三体 第四季",
+      "searchMs": 294,
+      "playCheck": "fail(UND_ERR_CONNECT_TIMEOUT)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:42.571Z"
+      "checkedAt": "2026-11-19T06:31:54.359Z",
+      "key": "xinlangapi"
     },
     {
       "name": "ckzy采集",
@@ -351,10 +360,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 2,
       "sampleName": "妖艳西游记",
-      "searchMs": 719,
-      "playCheck": "skipped",
+      "searchMs": 148,
+      "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:43.597Z",
+      "checkedAt": "2026-11-19T06:31:54.404Z",
       "key": "ckzy"
     },
     {
@@ -368,7 +377,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:44.614Z"
+      "checkedAt": "2026-11-19T06:31:54.843Z"
     },
     {
       "name": "新4K采集",
@@ -378,10 +387,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 1,
       "sampleName": "后西游记 第一季",
-      "searchMs": 68,
-      "playCheck": "skipped",
+      "searchMs": 278,
+      "playCheck": "no-m3u8(mp4)",
       "insecure": true,
-      "checkedAt": "2026-11-19T06:26:45.107Z",
+      "checkedAt": "2026-11-19T06:31:55.287Z",
       "key": "qijiyun"
     },
     {
@@ -392,24 +401,24 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 3,
       "sampleName": "三体第一季",
-      "searchMs": 745,
-      "playCheck": "skipped",
+      "searchMs": 67,
+      "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:45.405Z",
-      "key": "ffzyapi"
+      "checkedAt": "2026-11-19T06:31:55.290Z",
+      "key": "ffzyapi2"
     },
     {
       "name": "海外看",
       "api": "https://haiwaikan.com/api.php/provide/vod",
       "upstream": "gao-0825",
       "status": "unreachable",
-      "reason": "列表接口失败(ECONNRESET)",
+      "reason": "列表接口失败(UNABLE_TO_GET_ISSUER_CERT_LOCALLY)",
       "total": null,
       "sampleName": "",
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:46.507Z"
+      "checkedAt": "2026-11-19T06:31:56.693Z"
     },
     {
       "name": "快帆",
@@ -422,7 +431,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:46.979Z"
+      "checkedAt": "2026-11-19T06:31:56.899Z"
     },
     {
       "name": "乐视",
@@ -435,7 +444,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-19T06:26:46.992Z"
+      "checkedAt": "2026-11-19T06:31:56.942Z"
     }
   ]
 }
