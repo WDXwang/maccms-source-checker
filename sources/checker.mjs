@@ -112,25 +112,34 @@ function makeKey(url, used) {
 }
 
 // ---------- 上游拉取 ----------
-async function fetchUpstreamRaw(repo, branch, file) {
-  const url = `https://raw.githubusercontent.com/${repo}/${branch}/${file}`;
-  try {
-    const { ok, status, text } = await fetchWithTimeout(url, { timeout: 20000 });
-    if (ok && text) return text;
-    log(`  raw 获取失败(${status})，改用 GitHub API: ${repo}/${file}`);
-  } catch (e) {
-    log(`  raw 请求异常，改用 GitHub API: ${e.message}`);
-  }
-  const apiUrl = `https://api.github.com/repos/${repo}/contents/${file}?ref=${branch}`;
-  const headers = {};
-  if (GITHUB_TOKEN) headers.Authorization = `Bearer ${GITHUB_TOKEN}`;
-  const { ok, status, text } = await fetchWithTimeout(apiUrl, { timeout: 20000, headers });
-  if (!ok) throw new Error(`GitHub API 获取失败 HTTP ${status}: ${repo}/${file}`);
-  const data = JSON.parse(text);
-  if (data.encoding === 'base64') {
-    return Buffer.from(data.content, 'base64').toString('utf-8');
-  }
-  throw new Error(`GitHub API 返回格式异常: ${repo}/${file}`);
+async function fetchUpstreamRaw(up) {
+    // 直接 URL 上游：任意 HTTP(S) 配置地址（如 TVBox 接口），中文域名自动转 punycode
+    if (up.url) {
+        const url = new URL(up.url).href; // WHATWG URL 自动处理 IDN→punycode
+        const { ok, status, text } = await fetchWithTimeout(url, { timeout: 20000 });
+        if (ok && text) return text;
+        throw new Error(`URL 获取失败 HTTP ${status}: ${up.url}`);
+    }
+
+    const { repo, branch, file } = up;
+    const url = `https://raw.githubusercontent.com/${repo}/${branch}/${file}`;
+    try {
+        const { ok, status, text } = await fetchWithTimeout(url, { timeout: 20000 });
+        if (ok && text) return text;
+        log(`  raw 获取失败(${status})，改用 GitHub API: ${repo}/${file}`);
+    } catch (e) {
+        log(`  raw 请求异常，改用 GitHub API: ${e.message}`);
+    }
+    const apiUrl = `https://api.github.com/repos/${repo}/contents/${file}?ref=${branch}`;
+    const headers = {};
+    if (GITHUB_TOKEN) headers.Authorization = `Bearer ${GITHUB_TOKEN}`;
+    const { ok, status, text } = await fetchWithTimeout(apiUrl, { timeout: 20000, headers });
+    if (!ok) throw new Error(`GitHub API 获取失败 HTTP ${status}: ${repo}/${file}`);
+    const data = JSON.parse(text);
+    if (data.encoding === 'base64') {
+        return Buffer.from(data.content, 'base64').toString('utf-8');
+    }
+    throw new Error(`GitHub API 返回格式异常: ${repo}/${file}`);
 }
 
 function parseUpstream(name, format, rawText) {
@@ -380,9 +389,9 @@ async function main() {
   const cfg = JSON.parse(fs.readFileSync(UPSTREAMS_FILE, 'utf-8'));
   const collected = [];
   for (const up of cfg.upstreams) {
-    log(`拉取上游 ${up.name} (${up.repo}/${up.file}) ...`);
+    log(`拉取上游 ${up.name} (${up.url || `${up.repo}/${up.file}`}) ...`);
     try {
-      const raw = await fetchUpstreamRaw(up.repo, up.branch, up.file);
+      const raw = await fetchUpstreamRaw(up);
       const parsed = parseUpstream(up.name, up.format, raw);
       log(`  解析到 ${parsed.length} 个接口`);
       collected.push(...parsed);

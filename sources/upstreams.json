@@ -31,6 +31,18 @@
       "file": "0825.json",
       "format": "tvbox_sites",
       "comment": "8.2k star 的 TVBox 配置仓库，提取其中 type=1 的标准接口"
+    },
+    {
+      "name": "moyu-er-top",
+      "url": "http://我不是.摸鱼儿.top",
+      "format": "tvbox_sites",
+      "comment": "摸鱼儿 TVBox 聚合配置（社区知名接口；域名曾失效，保留每日探测，若恢复将自动纳入其中的采集源）"
+    },
+    {
+      "name": "moyu-er-com",
+      "url": "http://我不是.摸鱼儿.com",
+      "format": "tvbox_sites",
+      "comment": "摸鱼儿备用域名（探测发现曾为域名停放页；保留每日探测）"
     }
   ]
 }

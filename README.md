@@ -26,14 +26,21 @@
 
 在 `sources/upstreams.json` 中配置，可自行增删。当前包含：
 
-| 上游 | 仓库 | 格式 |
+| 上游 | 地址 | 格式 |
 |---|---|---|
-| applecms-sources | andywe0921-ops/applecms-sources | maccms_list（每日实测更新的接口清单） |
-| tvbox-config | muzheya/tvbox-config | tvbox_sites（纯API采集配置） |
-| tvbox-sub | efefsdwd/tvbox-sub | tvbox_sites（TVBox 订阅） |
-| gao-0825 | gaotianliuyun/gao | tvbox_sites（8.2k star TVBox 配置，提取 type=1） |
+| applecms-sources | andywe0921-ops/applecms-sources（GitHub 仓库） | maccms_list（每日实测更新的接口清单） |
+| tvbox-config | muzheya/tvbox-config（GitHub 仓库） | tvbox_sites（纯API采集配置） |
+| tvbox-sub | efefsdwd/tvbox-sub（GitHub 仓库） | tvbox_sites（TVBox 订阅） |
+| gao-0825 | gaotianliuyun/gao（GitHub 仓库） | tvbox_sites（8.2k star TVBox 配置，提取 type=1） |
+| moyu-er-top | `http://我不是.摸鱼儿.top`（直接 URL） | tvbox_sites（摸鱼儿聚合配置，域名失效中，恢复后自动纳入） |
+| moyu-er-com | `http://我不是.摸鱼儿.com`（直接 URL） | tvbox_sites（摸鱼儿备用域名，同上） |
 
-拉取顺序：优先 `raw.githubusercontent.com`，失败自动切换 GitHub Contents API（Actions 中自动携带内置 `GITHUB_TOKEN` 提升限额）。
+上游支持两种类型：
+
+- **GitHub 仓库上游**：填 `repo` / `branch` / `file`，自动从 raw（失败转 Contents API）拉取；
+- **直接 URL 上游**：填 `url` 即可，适用于任意 TVBox 配置接口地址（中文域名自动转 punycode，如 `http://我不是.摸鱼儿.top`）；上游失效时仅记日志跳过，不影响其他上游检测，因此也适合加入"曾经可用、当前失效"的接口做每日自动探测——一旦域名恢复，其中的采集源会自动进入验证流程。
+
+上游失败、URL 失效等均优雅降级：每日运行日志会记录原因，其余上游照常检测。
 
 解析时自动完成：合并去重（按域名+路径）、剥离 `/from/<线路>/` 路径段、剔除 XML 接口（LibreTV 仅支持 JSON）。
 
