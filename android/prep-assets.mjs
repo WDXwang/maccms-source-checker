@@ -84,19 +84,48 @@ for (const f of fs.readdirSync(WWW)) {
   }
 }
 
-// 2. 禁用代理鉴权：window.ProxyAuth = null → api.js/search.js 等回退为直连第三方接口
+// 2. 代理鉴权 → 直连模式：拦截 addAuthToProxyUrl，把 "/proxy/<编码URL>" 还原为直连地址
+//    WebView(file:// + UniversalAccess) 环境无需服务端代理，前端直连采集接口；
+//    所有请求层（api.js/search.js/douban.js）均经过此拦截点，一处改写全局生效
 patch('js/proxy-auth.js', () =>
-  '// APK 构建：已禁用服务端代理鉴权\n// WebView 开启 file:// UniversalAccess 后，前端直接请求采集接口\nwindow.ProxyAuth = null;\n');
+  '// APK 构建：代理鉴权已替换为直连模式\n' +
+  '// 把 "/proxy/<编码URL>" 还原为直连采集接口地址，配合 WebView UniversalAccess 免 CORS\n' +
+  'window.ProxyAuth = {\n' +
+  '    addAuthToProxyUrl: async function (proxiedUrl) {\n' +
+  '        const idx = String(proxiedUrl).search(/https?%3A%2F%2F/i);\n' +
+  '        if (idx === -1) return proxiedUrl; // 不含编码URL则原样返回\n' +
+  '        try {\n' +
+  '            return decodeURIComponent(String(proxiedUrl).slice(idx));\n' +
+  '        } catch (e) {\n' +
+  '            return proxiedUrl;\n' +
+  '        }\n' +
+  '    },\n' +
+  '    clearAuthCache: function () {},\n' +
+  '    validateProxyAuth: function () { return true; },\n' +
+  '    getPasswordHash: async function () { return null; },\n' +
+  '};\n');
 
-// 3. 禁用 PWA 注册（file:// 不适用，且避免缓存旧资源）
+// 3. 密码验证 → 全量 no-op：保留全局函数签名兼容其他模块调用，APK 免验证直接进入
+//    （原逻辑：密码为空时进入“强制设置密码”模式，弹窗隐藏输入框且无法关闭 —— 服务器部署专用设计，APK 不适用）
+patch('js/password.js', () =>
+  '// APK 构建：已禁用密码验证系统（本地个人应用无需密码）\n' +
+  '// 保留全局函数签名，兼容 app.js/ui.js/api.js/player.js 的调用检查\n' +
+  'window.isPasswordProtected = function () { return false; };\n' +
+  'window.isPasswordRequired = function () { return false; };\n' +
+  'window.isPasswordVerified = function () { return true; };\n' +
+  'window.verifyPassword = async function () { return true; };\n' +
+  'window.ensurePasswordProtection = function () { return true; };\n' +
+  '// 不注册 initPasswordProtection / 弹窗逻辑：APK 启动直接进入主界面\n');
+
+// 4. 禁用 PWA 注册（file:// 不适用，且避免缓存旧资源）
 patch('js/pwa-register.js', () =>
   '// APK 构建：已禁用 Service Worker 注册\n');
 
-// 4. 禁用版本检查（APK 无 GitHub 更新检查）
+// 5. 禁用版本检查（APK 无 GitHub 更新检查）
 patch('js/version-check.js', () =>
   '// APK 构建：已禁用版本检查\n');
 
-// 5. 注入最新实测可用源
+// 6. 注入最新实测可用源
 if (CUSTOMER && fs.existsSync(CUSTOMER)) {
   const content = fs.readFileSync(CUSTOMER, 'utf-8');
   fs.writeFileSync(path.join(WWW, 'js/customer_site.js'), content, 'utf-8');
@@ -105,10 +134,42 @@ if (CUSTOMER && fs.existsSync(CUSTOMER)) {
   console.warn('警告: 未提供 --customer，沿用源码自带数据源');
 }
 
-// 6. 豆瓣推荐默认关闭（豆瓣 API 需服务端代理签名，APK 直连不可用）
+// 7. 豆瓣推荐默认关闭（豆瓣 API 需服务端代理签名，APK 直连不可用）
 patch('js/app.js', t =>
   t.replace(/localStorage\.setItem\('doubanEnabled',\s*'true'\)/g, "localStorage.setItem('doubanEnabled', 'false')"));
 
-// 7. 清理体积：排除项已在复制时处理
+// 8. app.js 数据源自愈（与部署版同款补丁）：
+//    上游默认硬编码勾选 4 个已失效旧源（tyyszy 等），会导致 APK 首次启动搜索 0 结果
+patch('js/app.js', t => t
+  .replace(
+    /let selectedAPIs = JSON\.parse\(localStorage\.getItem\('selectedAPIs'\) \|\| '\[[^\]]*\]'\);([^\n]*)/,
+    "let selectedAPIs = JSON.parse(localStorage.getItem('selectedAPIs') || '[]'); // APK: 默认勾选由自愈逻辑补全"
+  )
+  .replace(
+    /(document\.addEventListener\('DOMContentLoaded', function \(\) \{\s*\n)(\s*)\/\/ 初始化API复选框\s*\n\s*initAPICheckboxes\(\);/,
+    `$1$2// APK: 数据源自愈 —— 剔除失效源勾选；无有效勾选时默认全选普通源；新增源自动勾选
+$2const availableKeys = Object.keys(API_SITES);
+$2selectedAPIs = selectedAPIs.filter(k => availableKeys.includes(k));
+$2if (selectedAPIs.length === 0) {
+$2    selectedAPIs = availableKeys.filter(k => !API_SITES[k].adult);
+$2}
+$2const seenSources = JSON.parse(localStorage.getItem('_seenSources') || '[]');
+$2const newlyAdded = availableKeys.filter(k => !API_SITES[k].adult && !seenSources.includes(k));
+$2if (newlyAdded.length > 0) {
+$2    selectedAPIs = Array.from(new Set(selectedAPIs.concat(newlyAdded)));
+$2}
+$2localStorage.setItem('_seenSources', JSON.stringify(availableKeys));
+$2localStorage.setItem('selectedAPIs', JSON.stringify(selectedAPIs));
+
+$2// 初始化API复选框
+$2initAPICheckboxes();`
+  )
+  .replace(
+    /\/\/ 默认选中资源\s*\n\s*selectedAPIs = \[[^\]]*\];/,
+    `// APK: 默认全选当前可用的普通资源
+        selectedAPIs = Object.keys(API_SITES).filter(k => !API_SITES[k].adult);`
+  ));
+
+// 完成汇总（文件级排除已在复制时处理）
 
 console.log(`完成：共应用 ${changes} 处适配，assets 就绪 → ${WWW}`);

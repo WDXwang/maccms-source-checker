@@ -104,6 +104,8 @@ function makeKey(url, used) {
     const seg = host.split('.').filter(p => /[a-z0-9]/i.test(p)).slice(-2, -1)[0] || host.split('.')[0];
     base = seg.replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 12) || 'src';
   } catch { /* keep base */ }
+  // key 必须是合法 JS 标识符（customer_site.js 直接用于对象字面量）：不能以数字开头
+  if (/^[0-9]/.test(base)) base = 's' + base;
   let key = base;
   let i = 2;
   while (used.has(key)) key = `${base}${i++}`;
