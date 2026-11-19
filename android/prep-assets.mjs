@@ -5,15 +5,19 @@
  * 用法：node android/prep-assets.mjs --src <LibreTV源码目录> --out <assets输出目录> --customer <customer_site.js>
  *
  * 适配内容：
+ *  0. overrides 覆盖 —— 仓库维护的定制前端文件（重构版豆瓣推荐页 douban.js / index.html）
  *  1. {{PASSWORD}} 占位符置空 —— file:// 加载时无访问密码（个人应用无需密码）
- *  2. proxy-auth.js 置空 —— 前端回退为直连采集接口，配合 WebView UniversalAccess 免 CORS
- *  3. pwa-register.js / version-check.js 禁用 —— APK 环境无 SW、无 GitHub 更新检查
+ *  2. proxy-auth.js 改写为直连模式 —— 前端直连采集接口，配合 WebView UniversalAccess 免 CORS
+ *  3. password.js 全量 no-op / pwa-register.js / version-check.js 禁用 —— APK 免验证直接进入
  *  4. customer_site.js 注入最新实测可用源（每日检测产物）
- *  5. 豆瓣推荐默认关闭 —— 豆瓣 API 需服务端代理，APK 直连不可用
+ *  5. app.js 数据源自愈补丁 —— 避免首次启动勾选失效旧源
  *  6. 排除服务端/部署平台文件
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const argv = process.argv.slice(2);
 function argOf(flag) {
@@ -64,6 +68,14 @@ function copyDir(srcDir, outDir) {
   }
 }
 copyDir(SRC, WWW);
+
+// 0. overrides 覆盖：仓库维护的定制前端文件（重构版豆瓣推荐页 douban.js / index.html 等）
+//    这些文件含部署版同款修复（推荐页双分区重构、封面防盗链加载链等）
+const OVERRIDES_DIR = path.join(__dirname, 'overrides');
+if (fs.existsSync(OVERRIDES_DIR)) {
+  copyDir(OVERRIDES_DIR, WWW);
+  console.log(`已应用 overrides 覆盖（${fs.readdirSync(OVERRIDES_DIR).length} 个定制文件）`);
+}
 console.log(`已复制 ${copied} 个文件到 ${WWW}`);
 
 // ---- 适配修改 ----
@@ -134,9 +146,8 @@ if (CUSTOMER && fs.existsSync(CUSTOMER)) {
   console.warn('警告: 未提供 --customer，沿用源码自带数据源');
 }
 
-// 7. 豆瓣推荐默认关闭（豆瓣 API 需服务端代理签名，APK 直连不可用）
-patch('js/app.js', t =>
-  t.replace(/localStorage\.setItem\('doubanEnabled',\s*'true'\)/g, "localStorage.setItem('doubanEnabled', 'false')"));
+// 7. 豆瓣推荐保持默认开启（重构版 douban.js 直连 API + 封面回退链；
+//    MainActivity.shouldInterceptRequest 对豆瓣域附加 Referer 解决 CDN 418 防盗链）
 
 // 8. app.js 数据源自愈（与部署版同款补丁）：
 //    上游默认硬编码勾选 4 个已失效旧源（tyyszy 等），会导致 APK 首次启动搜索 0 结果
