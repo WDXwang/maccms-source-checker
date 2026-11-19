@@ -1,0 +1,36 @@
+{
+  "upstreams": [
+    {
+      "name": "applecms-sources",
+      "repo": "andywe0921-ops/applecms-sources",
+      "branch": "master",
+      "file": "applecms_sources.json",
+      "format": "maccms_list",
+      "comment": "苹果CMS V10 可用采集接口列表，作者脚本每日自动实测更新"
+    },
+    {
+      "name": "tvbox-config",
+      "repo": "muzheya/tvbox-config",
+      "branch": "main",
+      "file": "tvbox-diy.json",
+      "format": "tvbox_sites",
+      "comment": "影视仓Win 自制 TVBox 纯API采集配置"
+    },
+    {
+      "name": "tvbox-sub",
+      "repo": "efefsdwd/tvbox-sub",
+      "branch": "main",
+      "file": "tvconfig.json",
+      "format": "tvbox_sites",
+      "comment": "TVBox/FongMi TV 订阅配置（公开苹果CMS采集接口）"
+    },
+    {
+      "name": "gao-0825",
+      "repo": "gaotianliuyun/gao",
+      "branch": "master",
+      "file": "0825.json",
+      "format": "tvbox_sites",
+      "comment": "8.2k star 的 TVBox 配置仓库，提取其中 type=1 的标准接口"
+    }
+  ]
+}
