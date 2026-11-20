@@ -658,16 +658,10 @@ patchFile('app/src/main/java/com/fongmi/android/tv/player/media/MediaItemFactory
     public static Uri getArtworkUri`, 'MediaItemFactory buildLiveMetadata');
 });
 
-// C. PlayerSetting：scale 缩放 API
+// C. PlayerSetting：scale 缩放 API（MIN/MAX_SCALE/getScaleMode NewTV2 已有，只补 getScale/putScale）
 patchFile('app/src/main/java/com/fongmi/android/tv/setting/PlayerSetting.java', (f, c) => {
   if (c.includes('getScale()')) return c;
-  if (!c.includes('RESIZE_MODE_FILL')) {
-    c = mustReplace(f, c, 'import', 'import static androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FILL;\nimport static androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FIT;\nimport static androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_ZOOM;\n\nimport', 'PlayerSetting resize imports');
-  }
-  return mustReplace(f, c, 'public static int getBackground()', `public static final int MIN_SCALE = 0;
-    public static final int MAX_SCALE = 2;
-
-    public static int getScale() {
+  return mustReplace(f, c, 'public static int getBackground() {', `public static int getScale() {
         return Math.clamp(Prefers.getInt("scale"), MIN_SCALE, MAX_SCALE);
     }
 
@@ -675,11 +669,13 @@ patchFile('app/src/main/java/com/fongmi/android/tv/setting/PlayerSetting.java', 
         Prefers.put("scale", Math.clamp(scale, MIN_SCALE, MAX_SCALE));
     }
 
-    public static int getScaleMode(int index) {
-        return index == 1 ? RESIZE_MODE_FILL : index == 2 ? RESIZE_MODE_ZOOM : RESIZE_MODE_FIT;
-    }
+    public static int getBackground() {`, 'PlayerSetting scale api');
+});
 
-    public static int getBackground()`, 'PlayerSetting scale api');
+// C2. BaseConfig：补 LIVE 类型常量（NewTV2 裁剪直播时删掉）
+patchFile('app/src/main/java/com/fongmi/android/tv/api/config/BaseConfig.java', (f, c) => {
+  if (c.includes('int LIVE = 1')) return c;
+  return mustReplace(f, c, 'public static final int VOD = 0;', 'public static final int VOD = 0;\n    public static final int LIVE = 1;', 'BaseConfig LIVE const');
 });
 
 // D. Constant：直播超时常量

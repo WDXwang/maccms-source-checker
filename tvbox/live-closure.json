@@ -197,12 +197,19 @@
     },
     {
       "ss": "main",
+      "pkg": "com.fongmi.android.tv.browse.LiveBrowse",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/browse/LiveBrowse.java"
+    },
+    {
+      "ss": "main",
       "pkg": "com.fongmi.android.tv.bean.Tv",
       "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/Tv.java"
     }
   ],
   "missingInBoth": [],
   "fileRes": [
+    "drawable/ic_browse_folder.xml",
+    "drawable/ic_browse_tv.xml",
     "drawable/ic_control_lock_off.xml",
     "drawable/ic_control_lock_on.xml",
     "drawable/ic_live_block.xml",
@@ -309,6 +316,8 @@
     "color/white_80",
     "drawable/exo_icon_pause",
     "drawable/exo_icon_play",
+    "drawable/ic_browse_folder",
+    "drawable/ic_browse_tv",
     "drawable/ic_control_lock_off",
     "drawable/ic_control_lock_on",
     "drawable/ic_live_block",
