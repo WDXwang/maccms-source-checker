@@ -1035,3 +1035,41 @@ patchFile('app/src/mobile/java/com/fongmi/android/tv/ui/dialog/CastDialog.java',
 
     public static CastDialog create(PlayerManager player) {`, 'CastDialog createLive');
 });
+
+// ============================================================
+// U. mobile variant 资源补齐（引用了 leanback-only / 两边都没有的资源）
+// ============================================================
+{
+  // U1. shape_live：上游 mobile 有 → 补 main（mobile 版直播 layout 引用）
+  const pairs = [
+    // [源(在UP或NT), 目标(相对 res 根), 说明]
+    [path.join(UP, 'app/src/mobile/res/drawable/shape_live.xml'), 'drawable/shape_live.xml', 'upstream-mobile shape_live'],
+    [path.join(SRC, 'app/src/leanback/res/drawable/selector_sheet_chip.xml'), 'drawable/selector_sheet_chip.xml', 'NT-leanback selector_sheet_chip'],
+    [path.join(SRC, 'app/src/leanback/res/drawable/selector_filter_chip.xml'), 'drawable/selector_filter_chip.xml', 'NT-leanback selector_filter_chip'],
+    [path.join(SRC, 'app/src/leanback/res/color/selector_filter_chip_text.xml'), 'color/selector_filter_chip_text.xml', 'NT-leanback selector_filter_chip_text'],
+  ];
+  for (const [srcFile, rel, what] of pairs) {
+    if (!fs.existsSync(srcFile)) { log('warn: res source missing', what); continue; }
+    const dst = path.join(SRC, 'app/src/main/res', rel);
+    if (fs.existsSync(dst)) continue;
+    ensureDir(dst);
+    fs.copyFileSync(srcFile, dst);
+    log('res backfilled to main:', rel);
+  }
+
+  // U2. grey_500：NT/上游都没有定义，但 mobile layout 引用（trackColor）→ 自建
+  {
+    const f = path.join(SRC, 'app/src/main/res/values/colors.xml');
+    let c = readF(f);
+    if (!new RegExp('name="grey_500"').test(c)) {
+      c = mustReplace(f, c, '</resources>', '    <color name="grey_500">#8E8E93</color>\n</resources>', 'grey_500 color');
+      writeF(f, c);
+      log('res backfilled: color/grey_500 (values)');
+    }
+  }
+
+  // U3. player_engine：上游 main values 有 → 合并（mobile view_control_live_action 引用）
+  mergeValues(path.join(SRC, 'app/src/main/res/values/strings.xml'), path.join(UP, 'app/src/main/res/values/strings.xml'), 'string', ['player_engine']);
+  mergeValues(path.join(SRC, 'app/src/main/res/values-zh-rCN/strings.xml'), path.join(UP, 'app/src/main/res/values-zh-rCN/strings.xml'), 'string', ['player_engine']);
+  mergeValues(path.join(SRC, 'app/src/main/res/values-zh-rTW/strings.xml'), path.join(UP, 'app/src/main/res/values-zh-rTW/strings.xml'), 'string', ['player_engine']);
+}
