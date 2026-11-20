@@ -873,4 +873,40 @@ for (const ss of ['leanback', 'mobile']) {
   }
 }
 
+// O. BrowsePlayback：直播流 4 参构造器（channelName，上游 LiveBrowse 调用）
+patchFile('app/src/main/java/com/fongmi/android/tv/browse/BrowsePlayback.java', (f, c) => {
+  if (c.includes('String channelName')) return c;
+  c = mustReplace(f, c, '    private final long resumePositionMs;', '    private final String channelName;\n    private final long resumePositionMs;', 'BrowsePlayback channelName field');
+  c = mustReplace(f, c, `    BrowsePlayback(String mediaId, Result result, @Nullable History history) {
+        this.mediaId = mediaId;
+        this.result = result;
+        this.history = history;
+        this.resumePositionMs = history != null && history.getPosition() > 0 ? history.getPosition() : C.TIME_UNSET;
+    }`, `    BrowsePlayback(String mediaId, Result result, @Nullable History history) {
+        this(mediaId, result, history, null);
+    }
+
+    BrowsePlayback(String mediaId, Result result, @Nullable History history, @Nullable String channelName) {
+        this.mediaId = mediaId;
+        this.result = result;
+        this.history = history;
+        this.channelName = channelName;
+        this.resumePositionMs = history != null && history.getPosition() > 0 ? history.getPosition() : C.TIME_UNSET;
+    }`, 'BrowsePlayback 4-arg ctor');
+  const tail = c.trimEnd();
+  if (!tail.endsWith('}')) throw new Error('锚点缺失 @ BrowsePlayback :: tail }');
+  return tail.slice(0, -1).trimEnd() + '\n\n    public String getChannelName() {\n        return channelName;\n    }\n}\n';
+});
+
+// P. RefreshEvent：LIVE 类型 + live()
+patchFile('app/src/main/java/com/fongmi/android/tv/event/RefreshEvent.java', (f, c) => {
+  if (c.includes('Type.LIVE')) return c;
+  c = mustReplace(f, c, 'public static void theme() {', `public static void live() {
+        EventBus.getDefault().post(new RefreshEvent(Type.LIVE));
+    }
+
+    public static void theme() {`, 'RefreshEvent live()');
+  return mustReplace(f, c, 'SUBTITLE, DANMAKU', 'SUBTITLE, DANMAKU, LIVE', 'RefreshEvent Type LIVE');
+});
+
 log('API BACKPORT DONE ✔');
