@@ -1122,3 +1122,117 @@ patchFile('app/src/mobile/java/com/fongmi/android/tv/ui/dialog/CastDialog.java',
   mergeValues(path.join(SRC, 'app/src/main/res/values-zh-rCN/strings.xml'), path.join(UP, 'app/src/main/res/values-zh-rCN/strings.xml'), 'string', ['player_engine']);
   mergeValues(path.join(SRC, 'app/src/main/res/values-zh-rTW/strings.xml'), path.join(UP, 'app/src/main/res/values-zh-rTW/strings.xml'), 'string', ['player_engine']);
 }
+
+// ============================================================
+// V. 手机版功能增强：全屏播放按钮（点播+直播）+ 直播倍速按钮显示
+// ============================================================
+
+// V0. 在 main 三语言 strings 追加（不存在才加）
+function ensureString(vdir, name, text) {
+  const f = path.join(SRC, 'app/src/main/res', vdir, 'strings.xml');
+  if (!fs.existsSync(f)) { log('warn: no strings for', vdir); return; }
+  let c = readF(f);
+  if (new RegExp(`name="${name}"`).test(c)) return;
+  c = mustReplace(f, c, '</resources>', `    <string name="${name}">${text}</string>\n</resources>`, `string ${name} @ ${vdir}`);
+  writeF(f, c);
+}
+ensureString('values', 'play_fullscreen', 'Fullscreen');
+ensureString('values', 'play_fullscreen_exit', 'Exit fullscreen');
+ensureString('values-zh-rCN', 'play_fullscreen', '全屏');
+ensureString('values-zh-rCN', 'play_fullscreen_exit', '退出全屏');
+ensureString('values-zh-rTW', 'play_fullscreen', '全屏');
+ensureString('values-zh-rTW', 'play_fullscreen_exit', '退出全屏');
+
+// V1a. 在 action 控制条布局的指定锚点按钮前插入新控制按钮（行定位，保留原缩进）
+function insertControlButton(relPath, anchorId, newId, textRes) {
+  const f = path.join(SRC, relPath);
+  let xml = readF(f);
+  if (xml.includes(`@+id/${newId}`)) { log('skip(button exists)', newId, relPath); return; }
+  const lines = xml.split('\n');
+  let idx = -1;
+  for (let i = 0; i < lines.length; i++) if (lines[i].includes(`@+id/${anchorId}`)) { idx = i; break; }
+  if (idx < 0) throw new Error(`锚点缺失 @ ${relPath} :: id/${anchorId}`);
+  let start = idx;
+  while (start > 0 && !lines[start].trim().startsWith('<')) start--;
+  const indent = lines[start].match(/^[ \t]*/)[0] || '            ';
+  const block = [
+    `${indent}<com.google.android.material.textview.MaterialTextView`,
+    `${indent}    android:id="@+id/${newId}"`,
+    `${indent}    style="@style/Control"`,
+    `${indent}    android:text="@string/${textRes}" />`,
+  ].join('\n');
+  lines.splice(start, 0, block);
+  writeF(f, lines.join('\n'));
+  log('control button added:', newId, '@', relPath);
+}
+
+// V1b. 删除指定按钮块内的 visibility="gone" 行（含配套 tools:visibility）
+function removeGoneInBlock(relPath, anchorId) {
+  const f = path.join(SRC, relPath);
+  let xml = readF(f);
+  const lines = xml.split('\n');
+  let idx = -1;
+  for (let i = 0; i < lines.length; i++) if (lines[i].includes(`@+id/${anchorId}`)) { idx = i; break; }
+  if (idx < 0) throw new Error(`锚点缺失 @ ${relPath} :: id/${anchorId}`);
+  // 从 id 行向后到元素结束行（含 />）删除 gone 行
+  let end = idx;
+  while (end < lines.length - 1 && !lines[end].includes('/>')) end++;
+  const removed = [];
+  for (let i = idx; i <= end; i++) {
+    if (lines[i].includes('android:visibility="gone"') || lines[i].includes('tools:visibility="visible"')) removed.push(lines[i]);
+  }
+  if (!removed.length) { log('skip(no gone)', anchorId, relPath); return; }
+  const kept = lines.filter(l => !removed.includes(l));
+  writeF(f, kept.join('\n'));
+  log('gone removed for button:', anchorId, '@', relPath);
+}
+
+// V1c. 点播：view_control_vod_action.xml 加全屏按钮（speed 前）
+insertControlButton('app/src/mobile/res/layout/view_control_vod_action.xml', 'speed', 'fullscreen', 'play_fullscreen');
+
+// V1d. VideoActivity：绑定全屏按钮 + onFullscreen 方法 + setFullscreen 同步按钮文字
+patchFile('app/src/mobile/java/com/fongmi/android/tv/ui/activity/VideoActivity.java', (f, c) => {
+  if (c.includes('private void onFullscreen()')) return c;
+  c = mustReplace(f, c, '        mBinding.control.action.speed.setOnClickListener(view -> onSpeed());', `        mBinding.control.action.fullscreen.setOnClickListener(view -> onFullscreen());
+        mBinding.control.action.speed.setOnClickListener(view -> onSpeed());`, 'VideoActivity fullscreen click');
+  c = mustReplace(f, c, '    private void onSpeed() {', `    private void onFullscreen() {
+        if (isFullscreen()) exitFullscreen();
+        else enterFullscreen();
+    }
+
+    private void onSpeed() {`, 'VideoActivity onFullscreen');
+  c = mustReplace(f, c, '    private void setFullscreen(boolean fullscreen) {\n        Util.toggleFullscreen(this, this.fullscreen = fullscreen);\n    }', `    private void setFullscreen(boolean fullscreen) {
+        Util.toggleFullscreen(this, this.fullscreen = fullscreen);
+        mBinding.control.action.fullscreen.setText(fullscreen ? R.string.play_fullscreen_exit : R.string.play_fullscreen);
+    }`, 'VideoActivity setFullscreen text');
+  return c;
+});
+
+// V2a. 直播：view_control_live_action.xml 加全屏按钮 + speed 按钮取消隐藏
+insertControlButton('app/src/mobile/res/layout/view_control_live_action.xml', 'speed', 'fullscreen', 'play_fullscreen');
+removeGoneInBlock('app/src/mobile/res/layout/view_control_live_action.xml', 'speed');
+
+// V2b. LiveActivity：全屏状态 + 横竖屏切换绑定
+patchFile('app/src/mobile/java/com/fongmi/android/tv/ui/activity/LiveActivity.java', (f, c) => {
+  if (c.includes('private void onFullscreen()')) return c;
+  c = mustReplace(f, c, 'import android.content.Intent;', 'import android.content.Intent;\nimport android.content.pm.ActivityInfo;', 'LiveActivity import ActivityInfo');
+  c = mustReplace(f, c, '    private boolean rotate;', '    private boolean rotate;\n    private boolean fullscreen;', 'LiveActivity fullscreen field');
+  c = mustReplace(f, c, '        mBinding.control.action.speed.setOnClickListener(view -> onSpeed());', `        mBinding.control.action.fullscreen.setOnClickListener(view -> onFullscreen());
+        mBinding.control.action.speed.setOnClickListener(view -> onSpeed());`, 'LiveActivity fullscreen click');
+  c = mustReplace(f, c, '    private void onSpeed() {', `    private void onFullscreen() {
+        fullscreen = !fullscreen;
+        if (fullscreen) {
+            if (isVisible(mBinding.recycler)) mBinding.recycler.setVisibility(View.GONE);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+            mBinding.control.action.fullscreen.setText(R.string.play_fullscreen_exit);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            mBinding.control.action.fullscreen.setText(R.string.play_fullscreen);
+        }
+    }
+
+    private void onSpeed() {`, 'LiveActivity onFullscreen');
+  return c;
+});
+
+log('MOBILE UX (fullscreen + live speed) DONE ✔');

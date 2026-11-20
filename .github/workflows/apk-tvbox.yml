@@ -76,15 +76,15 @@ jobs:
             --keystore tvbox/keystore/tvbox.p12 \
             --config-url "$CONFIG_URL"
 
-      - name: Build leanback (TV) release
+      - name: Build mobile (phone) release
         run: |
           cd "$NEWTV2_DIR"
           chmod +x gradlew
           ver_name="1.0.xctv.$(date -u +%Y%m%d)"
           ver_code=$(( $(date -u +%s) - 1700000000 ))
           echo "VERSION_NAME=$ver_name" >> "$GITHUB_ENV"
-          # 手机端已验证成功；本任务构建 TV 端（leanback）
-          ./gradlew :app:assembleLeanbackRelease \
+          # 本任务构建手机版（新增全屏按钮 + 直播倍速按钮）
+          ./gradlew :app:assembleMobileRelease \
             -PappVersionName="$ver_name" \
             -PappVersionCode="$ver_code" \
             --no-configuration-cache --no-daemon --stacktrace
