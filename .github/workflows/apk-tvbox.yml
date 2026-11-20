@@ -1,7 +1,7 @@
-name: Build TVBox APK
+﻿name: Build TVBox APK
 
 on:
-  workflow_dispatch: # 支持手动触发
+  workflow_dispatch: # 鏀寔鎵嬪姩瑙﹀彂
   push:
     branches: [main]
     paths:
@@ -12,10 +12,10 @@ permissions:
   contents: write
 
 env:
-  # 上游 FongMi/TV（影视TV）固定版本：5.8.7（与 AAR 套件 API 兼容的稳定基线）
-  UPSTREAM_SHA: '8626650ebcbc0d028e16d859e826fcf439720f3a'
-  # NewTV2（FongMi/TV 5.8.7 深度定制分支）提交的完整私有 media3 AAR 套件
-  # （上游 .gitignore 排除 lib-*.aar，官方未公开发布，此处取自社区同源分支）
+  # 涓婃父 FongMi/TV锛堝奖瑙員V锛夊浐瀹氱増鏈細5.8.7锛堜笌 AAR 濂椾欢 API 鍏煎鐨勭ǔ瀹氬熀绾匡級
+  UPSTREAM_SHA: '60e901aa0aeaaac41c3586b7f6c5989db5e4d5a4'
+  # NewTV2锛團ongMi/TV 5.8.7 娣卞害瀹氬埗鍒嗘敮锛夋彁浜ょ殑瀹屾暣绉佹湁 media3 AAR 濂椾欢
+  # 锛堜笂娓?.gitignore 鎺掗櫎 lib-*.aar锛屽畼鏂规湭鍏紑鍙戝竷锛屾澶勫彇鑷ぞ鍖哄悓婧愬垎鏀級
   AAR_REPO: 'ctowl2018/NewTV2'
   AAR_SHA: '65ab925802af3e4e5de29d8d6a2f2bdfa91591fa'
 
@@ -33,7 +33,7 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Setup Python 3.10 (ChaquoPy 构建需要)
+      - name: Setup Python 3.10 (ChaquoPy 鏋勫缓闇€瑕?
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
@@ -54,8 +54,8 @@ jobs:
 
       - name: Download private media3 AAR set
         run: |
-          # 上游 app/build.gradle 通过 fileTree(libs/*.aar) 引入私有 media3 编译产物
-          # （lib-*.aar 被 .gitignore 排除），从同源社区分支固定提交直连 raw 下载补齐
+          # 涓婃父 app/build.gradle 閫氳繃 fileTree(libs/*.aar) 寮曞叆绉佹湁 media3 缂栬瘧浜х墿
+          # 锛坙ib-*.aar 琚?.gitignore 鎺掗櫎锛夛紝浠庡悓婧愮ぞ鍖哄垎鏀浐瀹氭彁浜ょ洿杩?raw 涓嬭浇琛ラ綈
           base="https://raw.githubusercontent.com/${AAR_REPO}/${AAR_SHA}/app/libs"
           mkdir -p "$srcdir/app/libs"
           count=0
@@ -82,14 +82,14 @@ jobs:
             lib-ui-danmaku-release.aar \
             lib-ui-release.aar ; do
             curl -fsSL --retry 3 "$base/$name" -o "$srcdir/app/libs/$name"
-            [ -s "$srcdir/app/libs/$name" ] || { echo "下载失败: $name"; exit 1; }
+            [ -s "$srcdir/app/libs/$name" ] || { echo "涓嬭浇澶辫触: $name"; exit 1; }
             count=$((count + 1))
           done
           ls -la "$srcdir/app/libs"
-          echo "下载 AAR 数量: $count"
-          [ "$count" -ge 20 ] || { echo "AAR 下载数量异常"; exit 1; }
+          echo "涓嬭浇 AAR 鏁伴噺: $count"
+          [ "$count" -ge 20 ] || { echo "AAR 涓嬭浇鏁伴噺寮傚父"; exit 1; }
 
-      - name: Apply personal patches (内置源 + 签名 + 应用名)
+      - name: Apply personal patches (鍐呯疆婧?+ 绛惧悕 + 搴旂敤鍚?
         run: node tvbox/patch-fongmi.mjs "$srcdir" --repo-root "$GITHUB_WORKSPACE"
 
       - name: Build mobile & leanback release
@@ -123,3 +123,4 @@ jobs:
           name: TVBox-apk
           path: tvbox-dist/*
           if-no-files-found: error
+
