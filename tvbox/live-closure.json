@@ -187,6 +187,16 @@
     },
     {
       "ss": "main",
+      "pkg": "com.fongmi.android.tv.bean.Timeshift",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/Timeshift.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.bean.Core",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/Core.java"
+    },
+    {
+      "ss": "main",
       "pkg": "com.fongmi.android.tv.bean.Tv",
       "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/Tv.java"
     }
