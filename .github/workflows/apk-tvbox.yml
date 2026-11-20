@@ -11,6 +11,14 @@ on:
 permissions:
   contents: write
 
+env:
+  # 上游 FongMi/TV（影视TV）固定版本：5.8.7（与 AAR 套件 API 兼容的稳定基线）
+  UPSTREAM_SHA: '8626650ebcbc0d028e16d859e826fcf439720f3a'
+  # NewTV2（FongMi/TV 5.8.7 深度定制分支）提交的完整私有 media3 AAR 套件
+  # （上游 .gitignore 排除 lib-*.aar，官方未公开发布，此处取自社区同源分支）
+  AAR_REPO: 'ctowl2018/NewTV2'
+  AAR_SHA: '65ab925802af3e4e5de29d8d6a2f2bdfa91591fa'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,13 +33,42 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Download FongMi/TV source (pinned)
+      - name: Setup Python 3.10 (ChaquoPy 构建需要)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Android SDK packages
         run: |
-          curl -sSL "https://codeload.github.com/FongMi/TV/zip/5bf18d6ae8b0ccd9b753ef98f932838de2eb7254" -o fongmi.zip
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH"
+          SDKMANAGER=$(command -v sdkmanager || echo "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager")
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+          "$SDKMANAGER" "platform-tools" "platforms;android-37.0" "build-tools;37.0.0" > /dev/null
+
+      - name: Download FongMi/TV source (5.8.7 pinned)
+        run: |
+          curl -sSL "https://codeload.github.com/FongMi/TV/zip/${UPSTREAM_SHA}" -o fongmi.zip
           unzip -q fongmi.zip -d fongmi-src
           srcdir="$(find fongmi-src -mindepth 1 -maxdepth 1 -type d | head -1)"
           echo "srcdir=$srcdir" >> "$GITHUB_ENV"
-          echo "源码目录: $srcdir"
+
+      - name: Download private media3 AAR set
+        run: |
+          # 上游 app/build.gradle 通过 fileTree(libs/*.aar) 引入私有 media3 编译产物
+          # （lib-*.aar 被 .gitignore 排除），从同源社区分支下载补齐到 app/libs/
+          base="https://raw.githubusercontent.com/${AAR_REPO}/${AAR_SHA}/app/libs"
+          files=$(curl -sSL "https://api.github.com/repos/${AAR_REPO}/contents/app/libs?ref=${AAR_SHA}" | grep -o '"download_url": *"[^"]*"' | sed 's/"download_url": *"//; s/"$//')
+          mkdir -p "$srcdir/app/libs"
+          count=0
+          while IFS= read -r url; do
+            [ -z "$url" ] && continue
+            name="$(basename "$url")"
+            curl -sSL "$url" -o "$srcdir/app/libs/$name"
+            count=$((count + 1))
+          done <<< "$files"
+          ls -la "$srcdir/app/libs"
+          echo "下载 AAR 数量: $count"
+          [ "$count" -ge 20 ] || { echo "AAR 下载数量异常"; exit 1; }
 
       - name: Apply personal patches (内置源 + 签名 + 应用名)
         run: node tvbox/patch-fongmi.mjs "$srcdir" --repo-root "$GITHUB_WORKSPACE"
