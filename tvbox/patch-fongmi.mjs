@@ -48,7 +48,7 @@ patch('app/src/main/java/com/fongmi/android/tv/Constant.java', t => {
     'public class Constant {',
     'public class Constant {\n\n' +
     '    // 内置默认配置：每日实测源（点播 sites + 直播 lives），首次启动无配置时自动加载\n' +
-    `    public static final String DEFAULT_CONFIG = '${DEFAULT_CONFIG}';`
+    `    public static final String DEFAULT_CONFIG = "${DEFAULT_CONFIG}";`
   );
 });
 
