@@ -55,17 +55,36 @@ jobs:
       - name: Download private media3 AAR set
         run: |
           # 上游 app/build.gradle 通过 fileTree(libs/*.aar) 引入私有 media3 编译产物
-          # （lib-*.aar 被 .gitignore 排除），从同源社区分支下载补齐到 app/libs/
+          # （lib-*.aar 被 .gitignore 排除），从同源社区分支固定提交直连 raw 下载补齐
           base="https://raw.githubusercontent.com/${AAR_REPO}/${AAR_SHA}/app/libs"
-          files=$(curl -sSL "https://api.github.com/repos/${AAR_REPO}/contents/app/libs?ref=${AAR_SHA}" | grep -o '"download_url": *"[^"]*"' | sed 's/"download_url": *"//; s/"$//')
           mkdir -p "$srcdir/app/libs"
           count=0
-          while IFS= read -r url; do
-            [ -z "$url" ] && continue
-            name="$(basename "$url")"
-            curl -sSL "$url" -o "$srcdir/app/libs/$name"
+          for name in \
+            hiddenapibypass.aar \
+            lib-common-release.aar \
+            lib-container-release.aar \
+            lib-database-release.aar \
+            lib-datasource-okhttp-release.aar \
+            lib-datasource-release.aar \
+            lib-datasource-rtmp-release.aar \
+            lib-decoder-ffmpeg-release.aar \
+            lib-decoder-mpegh-release.aar \
+            lib-decoder-release.aar \
+            lib-effect-release.aar \
+            lib-exoplayer-dash-release.aar \
+            lib-exoplayer-hls-release.aar \
+            lib-exoplayer-release.aar \
+            lib-exoplayer-rtsp-release.aar \
+            lib-exoplayer-smoothstreaming-release.aar \
+            lib-extractor-release.aar \
+            lib-mpvplayer-release.aar \
+            lib-session-release.aar \
+            lib-ui-danmaku-release.aar \
+            lib-ui-release.aar ; do
+            curl -fsSL --retry 3 "$base/$name" -o "$srcdir/app/libs/$name"
+            [ -s "$srcdir/app/libs/$name" ] || { echo "下载失败: $name"; exit 1; }
             count=$((count + 1))
-          done <<< "$files"
+          done
           ls -la "$srcdir/app/libs"
           echo "下载 AAR 数量: $count"
           [ "$count" -ge 20 ] || { echo "AAR 下载数量异常"; exit 1; }
