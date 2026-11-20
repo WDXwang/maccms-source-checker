@@ -1,7 +1,7 @@
-﻿name: Build TVBox APK
+name: Build 星辰TV APK (NewTV2 base)
 
 on:
-  workflow_dispatch: # 鏀寔鎵嬪姩瑙﹀彂
+  workflow_dispatch: # 支持手动触发
   push:
     branches: [main]
     paths:
@@ -12,12 +12,15 @@ permissions:
   contents: write
 
 env:
-  # 涓婃父 FongMi/TV锛堝奖瑙員V锛夊浐瀹氱増鏈細5.8.7锛堜笌 AAR 濂椾欢 API 鍏煎鐨勭ǔ瀹氬熀绾匡級
-  UPSTREAM_SHA: '2d84dc637908a0ca8e7b86a55da631b143c9cf6b'
-  # NewTV2锛團ongMi/TV 5.8.7 娣卞害瀹氬埗鍒嗘敮锛夋彁浜ょ殑瀹屾暣绉佹湁 media3 AAR 濂椾欢
-  # 锛堜笂娓?.gitignore 鎺掗櫎 lib-*.aar锛屽畼鏂规湭鍏紑鍙戝竷锛屾澶勫彇鑷ぞ鍖哄悓婧愬垎鏀級
-  AAR_REPO: 'ctowl2018/NewTV2'
-  AAR_SHA: '65ab925802af3e4e5de29d8d6a2f2bdfa91591fa'
+  # NewTV2：FongMi/TV 5.8.7 的社区定制分支，自带与源码配套的私有 media3 AAR（官方从未公开），
+  # 已验证可编译；本流程在其基础上回移上游直播功能并注入内置配置。
+  NEWTV2_REPO: 'ctowl2018/NewTV2'
+  NEWTV2_SHA: '65ab925802af3e4e5de29d8d6a2f2bdfa91591fa'
+  # 上游 FongMi/TV 5.8.7 固定提交：直播功能源文件（Live* 闭包）取自此版本
+  UPSTREAM_REPO: 'FongMi/TV'
+  UPSTREAM_SHA: '8626650ebcbc0d028e16d859e826fcf439720f3a'
+  # 内置配置地址（国内加速代理前缀 + 本仓库每日检测产物：点播 sites + 直播 lives 同源）
+  CONFIG_URL: 'https://ghfast.top/https://raw.githubusercontent.com/WDXwang/maccms-source-checker/main/output/tvbox.json'
 
 jobs:
   build:
@@ -33,7 +36,12 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Setup Python 3.10 (ChaquoPy 鏋勫缓闇€瑕?
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Python 3.10 (ChaquoPy)
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
@@ -43,65 +51,47 @@ jobs:
           export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH"
           SDKMANAGER=$(command -v sdkmanager || echo "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager")
           yes | "$SDKMANAGER" --licenses > /dev/null || true
-          "$SDKMANAGER" "platform-tools" "platforms;android-37.0" "build-tools;37.0.0" > /dev/null
+          "$SDKMANAGER" "platform-tools" "platforms;android-37.0" "build-tools;37.0.0" "ndk;28.2.13676358" "cmake;3.22.1" > /dev/null
 
-      - name: Download FongMi/TV source (5.8.7 pinned)
+      - name: Download NewTV2 source (with bundled AARs)
         run: |
-          curl -sSL "https://codeload.github.com/FongMi/TV/zip/${UPSTREAM_SHA}" -o fongmi.zip
+          curl -fsSL --retry 3 "https://codeload.github.com/${NEWTV2_REPO}/zip/${NEWTV2_SHA}" -o newtv2.zip
+          unzip -q newtv2.zip -d newtv2-src
+          nt="$(find newtv2-src -mindepth 1 -maxdepth 1 -type d | head -1)"
+          echo "NEWTV2_DIR=$nt" >> "$GITHUB_ENV"
+          ls "$nt/app/libs" | wc -l
+
+      - name: Download upstream FongMi/TV 5.8.7 (live feature source)
+        run: |
+          curl -fsSL --retry 3 "https://codeload.github.com/${UPSTREAM_REPO}/zip/${UPSTREAM_SHA}" -o fongmi.zip
           unzip -q fongmi.zip -d fongmi-src
-          srcdir="$(find fongmi-src -mindepth 1 -maxdepth 1 -type d | head -1)"
-          echo "srcdir=$srcdir" >> "$GITHUB_ENV"
+          up="$(find fongmi-src -mindepth 1 -maxdepth 1 -type d | head -1)"
+          echo "UPSTREAM_DIR=$up" >> "$GITHUB_ENV"
 
-      - name: Download private media3 AAR set
+      - name: Apply 星辰TV patches (live backport + builtin config + signing)
         run: |
-          # 涓婃父 app/build.gradle 閫氳繃 fileTree(libs/*.aar) 寮曞叆绉佹湁 media3 缂栬瘧浜х墿
-          # 锛坙ib-*.aar 琚?.gitignore 鎺掗櫎锛夛紝浠庡悓婧愮ぞ鍖哄垎鏀浐瀹氭彁浜ょ洿杩?raw 涓嬭浇琛ラ綈
-          base="https://raw.githubusercontent.com/${AAR_REPO}/${AAR_SHA}/app/libs"
-          mkdir -p "$srcdir/app/libs"
-          count=0
-          for name in \
-            hiddenapibypass.aar \
-            lib-common-release.aar \
-            lib-container-release.aar \
-            lib-database-release.aar \
-            lib-datasource-okhttp-release.aar \
-            lib-datasource-release.aar \
-            lib-datasource-rtmp-release.aar \
-            lib-decoder-ffmpeg-release.aar \
-            lib-decoder-mpegh-release.aar \
-            lib-decoder-release.aar \
-            lib-effect-release.aar \
-            lib-exoplayer-dash-release.aar \
-            lib-exoplayer-hls-release.aar \
-            lib-exoplayer-release.aar \
-            lib-exoplayer-rtsp-release.aar \
-            lib-exoplayer-smoothstreaming-release.aar \
-            lib-extractor-release.aar \
-            lib-mpvplayer-release.aar \
-            lib-session-release.aar \
-            lib-ui-danmaku-release.aar \
-            lib-ui-release.aar ; do
-            curl -fsSL --retry 3 "$base/$name" -o "$srcdir/app/libs/$name"
-            [ -s "$srcdir/app/libs/$name" ] || { echo "涓嬭浇澶辫触: $name"; exit 1; }
-            count=$((count + 1))
-          done
-          ls -la "$srcdir/app/libs"
-          echo "涓嬭浇 AAR 鏁伴噺: $count"
-          [ "$count" -ge 20 ] || { echo "AAR 涓嬭浇鏁伴噺寮傚父"; exit 1; }
+          node tvbox/patch-newtv2.mjs \
+            --src "$NEWTV2_DIR" \
+            --up "$UPSTREAM_DIR" \
+            --keystore tvbox/keystore/tvbox.p12 \
+            --config-url "$CONFIG_URL"
 
-      - name: Apply personal patches (鍐呯疆婧?+ 绛惧悕 + 搴旂敤鍚?
-        run: node tvbox/patch-fongmi.mjs "$srcdir" --repo-root "$GITHUB_WORKSPACE"
-
-      - name: Build mobile & leanback release
+      - name: Build leanback (TV) & mobile release
         run: |
-          cd "$srcdir"
+          cd "$NEWTV2_DIR"
           chmod +x gradlew
-          ./gradlew :app:assembleMobileRelease :app:assembleLeanbackRelease --no-daemon --stacktrace
+          ver_name="1.0.xctv.$(date -u +%Y%m%d)"
+          ver_code=$(( $(date -u +%s) - 1700000000 ))
+          echo "VERSION_NAME=$ver_name" >> "$GITHUB_ENV"
+          ./gradlew :app:assembleLeanbackRelease :app:assembleMobileRelease \
+            -PappVersionName="$ver_name" \
+            -PappVersionCode="$ver_code" \
+            --no-configuration-cache --no-daemon --stacktrace
 
       - name: Collect APKs
         run: |
           mkdir -p tvbox-dist
-          find "$srcdir/app/build/outputs/apk" -name '*.apk' -path '*release*' | while read -r f; do
+          find "$NEWTV2_DIR/app/build/outputs/apk" -name '*.apk' -path '*release*' | while read -r f; do
             base="$(basename "$f")"
             case "$f" in
               *mobile*) flavor="mobile" ;;
@@ -116,6 +106,7 @@ jobs:
             cp "$f" "tvbox-dist/XCTV-${flavor}-${abi}.apk"
           done
           ls -la tvbox-dist
+          [ "$(ls tvbox-dist/*.apk 2>/dev/null | wc -l)" -ge 2 ] || { echo "APK 数量异常"; exit 1; }
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -123,5 +114,3 @@ jobs:
           name: TVBox-apk
           path: tvbox-dist/*
           if-no-files-found: error
-
-

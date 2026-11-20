@@ -1,0 +1,374 @@
+{
+  "javaCopy": [
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.api.config.LiveConfig",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/api/config/LiveConfig.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.api.LiveApi",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/api/LiveApi.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.api.parser.EpgParser",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/api/parser/EpgParser.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.api.parser.LiveParser",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/api/parser/LiveParser.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.bean.Catchup",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/Catchup.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.bean.Channel",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/Channel.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.bean.Epg",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/Epg.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.bean.EpgData",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/EpgData.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.bean.Group",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/Group.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.bean.Live",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/Live.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.impl.LiveListener",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/impl/LiveListener.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.model.LiveViewModel",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/model/LiveViewModel.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.playback.live.LiveDataSource",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/playback/live/LiveDataSource.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.playback.live.LivePlaybackController",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/playback/live/LivePlaybackController.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.playback.live.LivePlaybackHost",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/playback/live/LivePlaybackHost.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.playback.live.LivePlaybackState",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/playback/live/LivePlaybackState.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.playback.live.LivePlayRequest",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/playback/live/LivePlayRequest.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.setting.LiveSetting",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/setting/LiveSetting.java"
+    },
+    {
+      "ss": "leanback",
+      "pkg": "com.fongmi.android.tv.ui.adapter.ChannelAdapter",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/leanback/java/com/fongmi/android/tv/ui/adapter/ChannelAdapter.java"
+    },
+    {
+      "ss": "mobile",
+      "pkg": "com.fongmi.android.tv.ui.adapter.ChannelAdapter",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/mobile/java/com/fongmi/android/tv/ui/adapter/ChannelAdapter.java"
+    },
+    {
+      "ss": "leanback",
+      "pkg": "com.fongmi.android.tv.ui.adapter.EpgDataAdapter",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/leanback/java/com/fongmi/android/tv/ui/adapter/EpgDataAdapter.java"
+    },
+    {
+      "ss": "mobile",
+      "pkg": "com.fongmi.android.tv.ui.adapter.EpgDataAdapter",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/mobile/java/com/fongmi/android/tv/ui/adapter/EpgDataAdapter.java"
+    },
+    {
+      "ss": "leanback",
+      "pkg": "com.fongmi.android.tv.ui.adapter.GroupAdapter",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/leanback/java/com/fongmi/android/tv/ui/adapter/GroupAdapter.java"
+    },
+    {
+      "ss": "mobile",
+      "pkg": "com.fongmi.android.tv.ui.adapter.GroupAdapter",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/mobile/java/com/fongmi/android/tv/ui/adapter/GroupAdapter.java"
+    },
+    {
+      "ss": "leanback",
+      "pkg": "com.fongmi.android.tv.ui.adapter.LiveAdapter",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/leanback/java/com/fongmi/android/tv/ui/adapter/LiveAdapter.java"
+    },
+    {
+      "ss": "mobile",
+      "pkg": "com.fongmi.android.tv.ui.adapter.LiveAdapter",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/mobile/java/com/fongmi/android/tv/ui/adapter/LiveAdapter.java"
+    },
+    {
+      "ss": "leanback",
+      "pkg": "com.fongmi.android.tv.ui.custom.CustomLiveListView",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/leanback/java/com/fongmi/android/tv/ui/custom/CustomLiveListView.java"
+    },
+    {
+      "ss": "leanback",
+      "pkg": "com.fongmi.android.tv.ui.custom.LiveInput",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/leanback/java/com/fongmi/android/tv/ui/custom/LiveInput.java"
+    },
+    {
+      "ss": "leanback",
+      "pkg": "com.fongmi.android.tv.ui.dialog.LiveDialog",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/leanback/java/com/fongmi/android/tv/ui/dialog/LiveDialog.java"
+    },
+    {
+      "ss": "mobile",
+      "pkg": "com.fongmi.android.tv.ui.dialog.LiveDialog",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/mobile/java/com/fongmi/android/tv/ui/dialog/LiveDialog.java"
+    },
+    {
+      "ss": "leanback",
+      "pkg": "com.fongmi.android.tv.ui.dialog.PassDialog",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/leanback/java/com/fongmi/android/tv/ui/dialog/PassDialog.java"
+    },
+    {
+      "ss": "mobile",
+      "pkg": "com.fongmi.android.tv.ui.dialog.PassDialog",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/mobile/java/com/fongmi/android/tv/ui/dialog/PassDialog.java"
+    },
+    {
+      "ss": "leanback",
+      "pkg": "com.fongmi.android.tv.ui.activity.LiveActivity",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/leanback/java/com/fongmi/android/tv/ui/activity/LiveActivity.java"
+    },
+    {
+      "ss": "mobile",
+      "pkg": "com.fongmi.android.tv.ui.activity.LiveActivity",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/mobile/java/com/fongmi/android/tv/ui/activity/LiveActivity.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.db.dao.LiveDao",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/db/dao/LiveDao.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.service.LiveMetadata",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/service/LiveMetadata.java"
+    },
+    {
+      "ss": "leanback",
+      "pkg": "com.fongmi.android.tv.receiver.BootReceiver",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/leanback/java/com/fongmi/android/tv/receiver/BootReceiver.java"
+    },
+    {
+      "ss": "main",
+      "pkg": "com.fongmi.android.tv.bean.Tv",
+      "src": "D:/Data/TeleAgent的工作空间/.temp/tvbox-src/TV-587-ex/TV-8626650ebcbc0d028e16d859e826fcf439720f3a/app/src/main/java/com/fongmi/android/tv/bean/Tv.java"
+    }
+  ],
+  "missingInBoth": [],
+  "fileRes": [
+    "drawable/ic_control_lock_off.xml",
+    "drawable/ic_control_lock_on.xml",
+    "drawable/ic_live_block.xml",
+    "drawable/ic_live_boot.xml",
+    "drawable/ic_live_pass.xml",
+    "drawable/ic_widget_bright_high.xml",
+    "drawable/ic_widget_bright_low.xml",
+    "drawable/ic_widget_bright_medium.xml",
+    "drawable/ic_widget_error.xml",
+    "drawable/ic_widget_forward.xml",
+    "drawable/ic_widget_play.xml",
+    "drawable/ic_widget_rewind.xml",
+    "drawable/ic_widget_volume_high.xml",
+    "drawable/ic_widget_volume_low.xml",
+    "drawable/ic_widget_volume_medium.xml",
+    "drawable/selector_button.xml",
+    "drawable/selector_chip_round.xml",
+    "drawable/selector_live.xml",
+    "drawable/shape_button_normal.xml",
+    "drawable/shape_chip_round_activated.xml",
+    "drawable/shape_chip_round_focused.xml",
+    "drawable/shape_chip_round_normal.xml",
+    "drawable/shape_controller.xml",
+    "drawable/shape_live_focused.xml",
+    "drawable/shape_live_info.xml",
+    "drawable/shape_live_list.xml",
+    "drawable/shape_widget.xml",
+    "drawable/shape_widget_message.xml",
+    "layout/activity_live.xml",
+    "layout/adapter_channel.xml",
+    "layout/adapter_epg_data.xml",
+    "layout/adapter_group.xml",
+    "layout/adapter_live.xml",
+    "layout/dialog_live.xml",
+    "layout/dialog_pass.xml",
+    "layout/view_control_live.xml",
+    "layout/view_control_live_action.xml",
+    "layout/view_progress.xml",
+    "layout/view_widget_live.xml"
+  ],
+  "valueItems": {
+    "string": [
+      "keep",
+      "live_line",
+      "setting_live",
+      "error_play_url",
+      "dialog_action_live_boot",
+      "dialog_action_live_password",
+      "dialog_action_toggle_hint",
+      "setting_on",
+      "setting_off",
+      "dialog_action_bulk_result",
+      "live_refresh",
+      "pause",
+      "play",
+      "keep_del",
+      "keep_add",
+      "live_pass",
+      "dialog_positive",
+      "play_config",
+      "play_exo",
+      "decoder_action",
+      "play_speed",
+      "play_scale",
+      "play_track_text",
+      "play_track_audio",
+      "play_track_video",
+      "play_invert",
+      "play_across",
+      "play_change"
+    ],
+    "array": [
+      "select_scale"
+    ],
+    "color": [
+      "white",
+      "text",
+      "white_30",
+      "black",
+      "white_80",
+      "black_40",
+      "black_50",
+      "black_90",
+      "black_05",
+      "black_80"
+    ],
+    "style": [
+      "Player.Live",
+      "Shadow",
+      "Control"
+    ]
+  },
+  "resRefs": [
+    "array/select_scale",
+    "color/black",
+    "color/black_05",
+    "color/black_40",
+    "color/black_50",
+    "color/black_80",
+    "color/black_90",
+    "color/text",
+    "color/white",
+    "color/white_30",
+    "color/white_80",
+    "drawable/exo_icon_pause",
+    "drawable/exo_icon_play",
+    "drawable/ic_control_lock_off",
+    "drawable/ic_control_lock_on",
+    "drawable/ic_live_block",
+    "drawable/ic_live_boot",
+    "drawable/ic_live_pass",
+    "drawable/ic_widget_bright_high",
+    "drawable/ic_widget_bright_low",
+    "drawable/ic_widget_bright_medium",
+    "drawable/ic_widget_error",
+    "drawable/ic_widget_forward",
+    "drawable/ic_widget_play",
+    "drawable/ic_widget_rewind",
+    "drawable/ic_widget_volume_high",
+    "drawable/ic_widget_volume_low",
+    "drawable/ic_widget_volume_medium",
+    "drawable/selector_button",
+    "drawable/selector_chip_round",
+    "drawable/selector_live",
+    "drawable/shape_button_normal",
+    "drawable/shape_chip_round_activated",
+    "drawable/shape_chip_round_focused",
+    "drawable/shape_chip_round_normal",
+    "drawable/shape_controller",
+    "drawable/shape_live_focused",
+    "drawable/shape_live_info",
+    "drawable/shape_live_list",
+    "drawable/shape_widget",
+    "drawable/shape_widget_message",
+    "id/config",
+    "layout/activity_live",
+    "layout/adapter_channel",
+    "layout/adapter_epg_data",
+    "layout/adapter_group",
+    "layout/adapter_live",
+    "layout/dialog_live",
+    "layout/dialog_pass",
+    "layout/view_control_live",
+    "layout/view_control_live_action",
+    "layout/view_progress",
+    "layout/view_widget_live",
+    "string/decoder_action",
+    "string/dialog_action_bulk_result",
+    "string/dialog_action_live_boot",
+    "string/dialog_action_live_password",
+    "string/dialog_action_toggle_hint",
+    "string/dialog_positive",
+    "string/error_play_url",
+    "string/keep",
+    "string/keep_add",
+    "string/keep_del",
+    "string/live_line",
+    "string/live_pass",
+    "string/live_refresh",
+    "string/pause",
+    "string/play",
+    "string/play_across",
+    "string/play_change",
+    "string/play_config",
+    "string/play_exo",
+    "string/play_invert",
+    "string/play_scale",
+    "string/play_speed",
+    "string/play_track_audio",
+    "string/play_track_text",
+    "string/play_track_video",
+    "string/setting_live",
+    "string/setting_off",
+    "string/setting_on",
+    "style/Control",
+    "style/Player.Live",
+    "style/Shadow"
+  ]
+}
