@@ -100,7 +100,8 @@ function extractEntries(xmlText, tagName, names) {
 function mergeValues(ntFile, upFile, tagName, names) {
   if (!fs.existsSync(upFile)) { log('warn: no upstream values', path.basename(upFile)); return; }
   const upXml = readF(upFile);
-  const entries = extractEntries(upXml, tagName, names);
+  const unique = [...new Set(names)]; // 同名重复注入会导致资源合并冲突（Found item more than one time）
+  const entries = extractEntries(upXml, tagName, unique);
   if (!entries.length) return;
   let nt = fs.existsSync(ntFile) ? readF(ntFile) : '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n</resources>\n';
   const add = [];
