@@ -18,12 +18,12 @@
 
 ### 2. APK（星辰TV，基于 FongMi/TV 5.8.7 + NewTV2 配套源码）
 
-- **手机版 / TV 版** 双 flavor，各含 arm64-v8a / armeabi-v7a 两个 ABI
+- **手机版 / TV 版** 双 flavor 均已构建成功，各含 arm64-v8a / armeabi-v7a 两个 ABI
 - **内置默认配置地址**：首次启动自动加载上面的主地址，无需手动输入配置；点播与直播同源（同一 tvbox.json 的 sites + lives）
 - **直播功能已回移**：TV 版顶部导航「直播」键 / 手机版底部导航「直播」/ 设置页「直播」行（长按可改直播地址）
 - 签名固定（`tvbox/keystore/tvbox.p12`），可覆盖安装升级
 - 构建基线：[ctowl2018/NewTV2](https://github.com/ctowl2018/NewTV2)（FongMi/TV 5.8.7 社区分支，**自带与源码配套的私有 media3 AAR**——上游官方 AAR 从未公开且各版本强绑定，直接用上游源码必缺类失败；NewTV2 基线是社区唯一验证可编译的组合）
-- 构建：`.github/workflows/apk-tvbox.yml`（手动触发或推送 `tvbox/**` 触发）→ 下载 NewTV2 + 上游 5.8.7 源码 → `tvbox/patch-newtv2.mjs` 回移直播闭包（38 个 Java + 17 个独有资源 + values 合并 + Room 迁移 38→39）+ 内置配置/改名/签名 → 双 flavor 构建 → Artifacts 下载
+- 构建：`.github/workflows/apk-tvbox.yml`（手动触发或推送 `tvbox/**` 触发）→ 下载 NewTV2 + 上游 5.8.7 源码 → `tvbox/patch-newtv2.mjs` 回移直播闭包（41 个 Java + 按 sourceSet 复制资源 + 13 处 API 回移 + 自建 VideoTransform + Room 迁移 38→39）+ 内置配置/改名/签名 → 构建 → Artifacts 下载
 
 ### 3. 直播（TV）源验证方式
 

@@ -115,3 +115,18 @@ jobs:
           name: TVBox-apk
           path: tvbox-dist/*
           if-no-files-found: error
+
+      - name: Create GitHub Release with APKs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="xctv-$(date -u +%Y%m%d-%H%M)"
+          notes="星辰TV 自动构建
+          - 基线：NewTV2（FongMi/TV 5.8.7 配套源码 + 私有 media3 AAR）+ 上游直播功能回移
+          - 内置配置：${CONFIG_URL}
+          - 版本：$VERSION_NAME"
+          gh release create "$tag" tvbox-dist/*.apk \
+            --title "星辰TV $tag" \
+            --notes "$notes" \
+            --repo "$GITHUB_REPOSITORY" || { echo "release 创建失败（可能同名 tag 已存在），继续"; }
+          gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' || true
