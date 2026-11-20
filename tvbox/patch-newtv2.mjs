@@ -1038,24 +1038,73 @@ patchFile('app/src/mobile/java/com/fongmi/android/tv/ui/dialog/CastDialog.java',
 
 // ============================================================
 // U. mobile variant 资源补齐（引用了 leanback-only / 两边都没有的资源）
+//    递归闭合：补进 main 的资源引用其他资源时一并补齐
 // ============================================================
 {
-  // U1. shape_live：上游 mobile 有 → 补 main（mobile 版直播 layout 引用）
-  const pairs = [
-    // [源(在UP或NT), 目标(相对 res 根), 说明]
-    [path.join(UP, 'app/src/mobile/res/drawable/shape_live.xml'), 'drawable/shape_live.xml', 'upstream-mobile shape_live'],
-    [path.join(SRC, 'app/src/leanback/res/drawable/selector_sheet_chip.xml'), 'drawable/selector_sheet_chip.xml', 'NT-leanback selector_sheet_chip'],
-    [path.join(SRC, 'app/src/leanback/res/drawable/selector_filter_chip.xml'), 'drawable/selector_filter_chip.xml', 'NT-leanback selector_filter_chip'],
-    [path.join(SRC, 'app/src/leanback/res/color/selector_filter_chip_text.xml'), 'color/selector_filter_chip_text.xml', 'NT-leanback selector_filter_chip_text'],
+  // 在 main res 中查找资源（文件型）；返回 true 若已存在
+  const resInMain = (rel) => fs.existsSync(path.join(SRC, 'app/src/main/res', rel));
+  // 从 NT leanback / 上游 mobile 找资源源文件（drawable/color 目录，xml 扩展）
+  const findResAny = (type, name) => {
+    const cands = [];
+    if (type === 'color') cands.push(`color/${name}.xml`);
+    for (const d of [`${type}/`, `${type}-nodpi/`]) cands.push(`${d}${name}.xml`);
+    for (const rel of cands) {
+      for (const ss of ['leanback', 'mobile']) {
+        for (const root of [SRC, UP]) {
+          const p = path.join(root, 'app/src', ss, 'res', rel);
+          if (fs.existsSync(p)) return p;
+        }
+      }
+      // main 里的上游资源
+      const upMain = path.join(UP, 'app/src/main/res', rel);
+      if (fs.existsSync(upMain)) return upMain;
+    }
+    return null;
+  };
+  // 解析资源文件的 @type/name 引用
+  const parseRefs = (file) => {
+    const code = fs.readFileSync(file, 'utf8');
+    const refs = new Set();
+    for (const m of code.matchAll(/@(drawable|color|string|dimen|style|anim|menu|xml|mipmap)\/([\w.]+)/g)) refs.add(`${m[1]}/${m[2]}`);
+    return refs;
+  };
+
+  // U1. 初始种子（mobile variant 引用但 main/mobile 缺的资源）
+  const seeds = [
+    ['drawable', 'shape_live'],
+    ['drawable', 'selector_sheet_chip'],
+    ['drawable', 'selector_filter_chip'],
+    ['color', 'selector_filter_chip_text'],
   ];
-  for (const [srcFile, rel, what] of pairs) {
-    if (!fs.existsSync(srcFile)) { log('warn: res source missing', what); continue; }
+  let backfillCount = 0;
+  const queue = [...seeds];
+  const done = new Set();
+  while (queue.length) {
+    const [type, name] = queue.shift();
+    const key = `${type}/${name}`;
+    if (done.has(key)) continue;
+    done.add(key);
+    if (type === 'string' || type === 'dimen' || type === 'style' || type === 'anim' || type === 'menu' || type === 'xml' || type === 'mipmap') {
+      // values/其他类型暂不递归（seed 均为 drawable/color）
+      continue;
+    }
+    // string/dimen 引用走 values 合并；这里只处理 drawable/color 文件型
+    const rel = type === 'color' ? `color/${name}.xml` : `drawable/${name}.xml`;
+    if (resInMain(rel)) continue; // main 已有
+    const srcFile = findResAny(type, name);
+    if (!srcFile) { log('warn: backfill res not found', key); continue; }
     const dst = path.join(SRC, 'app/src/main/res', rel);
-    if (fs.existsSync(dst)) continue;
     ensureDir(dst);
     fs.copyFileSync(srcFile, dst);
+    backfillCount++;
     log('res backfilled to main:', rel);
+    // 递归：该资源引用的其他资源也需补齐（仅 drawable/color 文件型）
+    for (const ref of parseRefs(dst)) {
+      const [t, n] = ref.split('/');
+      if (t === 'drawable' || t === 'color') queue.push([t, n]);
+    }
   }
+  log(`res backfilled total: ${backfillCount}`);
 
   // U2. grey_500：NT/上游都没有定义，但 mobile layout 引用（trackColor）→ 自建
   {
