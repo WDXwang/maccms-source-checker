@@ -1,13 +1,42 @@
-# 苹果CMS采集源每日检测器 (maccms-source-checker)
+# 星辰TVBox 源验证与双端 APK 构建 (maccms-source-checker)
 
-每天自动从社区维护的开源项目中收集「苹果CMS V10 采集接口」（`api.php/provide/vod` 类），**逐个实测验证可用性**，并生成两类可直接使用的产物：
+> 本项目已从「LibreTV 采集源检测器」升级为 **个人 TVBox 一体化流水线**：
+> 每日实测点播（苹果CMS）+ 直播（TV）源 → 生成合并配置（国内加速）→ 基于开源 [FongMi/TV](https://github.com/FongMi/TV)（影视TV）自动构建「星辰TV」手机版 / TV版 APK。
+
+## 快速使用
+
+### 1. 配置地址（内置到 APK，也可手动导入任意 TVBox 类应用）
+
+| 用途 | 地址 |
+|---|---|
+| 主地址（APK 内置默认，ghfast 加速） | `https://ghfast.top/https://raw.githubusercontent.com/WDXwang/maccms-source-checker/main/output/tvbox.json` |
+| 备用（gh-proxy 加速） | `https://gh-proxy.com/https://raw.githubusercontent.com/WDXwang/maccms-source-checker/main/output/tvbox.json` |
+| 备用（jsDelivr） | `https://cdn.jsdelivr.net/gh/WDXwang/maccms-source-checker@main/output/tvbox.json` |
+
+- 配置包含 **点播 sites（每日实测可用的苹果CMS接口）+ 直播 lives（实测可达的 TV 源，GitHub 托管列表均走加速）**
+- 每天 UTC 00:30（北京时间 08:30）自动重新检测并更新，失效源自动剔除
+
+### 2. APK（星辰TV，基于 FongMi/TV 5.8.9 定制）
+
+- **手机版 / TV 版** 双 flavor，各含 arm64-v8a / armeabi-v7a 两个 ABI
+- **内置默认配置地址**：首次启动自动加载上面的主地址，无需手动输入配置
+- 签名固定（`tvbox/keystore/tvbox.p12`），可覆盖安装升级
+- 构建：`.github/workflows/apk-tvbox.yml`（手动触发或推送 `tvbox/**` 触发），产物在 Actions Artifacts 下载
+
+### 3. 直播（TV）源验证方式
+
+对每个直播上游：加速地址实测拉取 → 解析频道与分组 → **仅保留 http(s) 公网可播频道**（rtp 组播等自动剔除）→ 按分组抽样探测频道 HTTP 可达率 → 保留可用源进配置。抽样可达率 ≠ 实际播放成功率（部分源有地区/运营商限制），详见每日报告。
+
+---
+
+## 检测产物明细
 
 | 产物 | 用途 |
 |---|---|
-| `output/tvbox.json` | TVBox / FongMi 影视 直接导入的配置（`sites` + `type:1`） |
+| `output/tvbox.json` | TVBox / FongMi 影视 直接导入的合并配置（点播 sites + 直播 lives） |
 | `output/libretv_apis.json` | LibreTV「设置 → 自定义API」可用清单（`name + api`） |
 | `output/libretv_customer_site.js` | LibreTV 本地部署可直接替换 `js/customer_site.js` 的文件 |
-| `output/report.md` | 人类可读检测报告（状态 / 片库量 / 搜索耗时 / 播放抽查） |
+| `output/report.md` | 人类可读检测报告（点播状态 / 片库量 / 搜索耗时 / 播放抽查；直播频道数 / 抽样可达率） |
 | `output/checked_sources.json` | 机器可读全量结果 |
 | `output/history/日期.json` | 每日快照，追溯某个源从哪天开始失效 |
 

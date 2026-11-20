@@ -97,5 +97,44 @@
       "format": "tvbox_sites",
       "comment": "摸鱼儿备用域名（探测发现曾为域名停放页；保留每日探测）"
     }
+  ],
+  "liveUpstreams": [
+    {
+      "name": "聚合直播IPTV4",
+      "url": "https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u",
+      "kind": "m3u",
+      "comment": "vbskycn/iptv（10k star）每日自动聚合更新，央视+卫视+地方频道"
+    },
+    {
+      "name": "直播聚合lite",
+      "url": "https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/bbxx365_lite.txt",
+      "kind": "txt",
+      "comment": "collect-tv-txt 聚合轻量版，25 个分组，含央视/卫视/地方/港澳台"
+    },
+    {
+      "name": "全球中文台",
+      "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn.m3u",
+      "kind": "m3u",
+      "comment": "iptv-org（144k star）中国频道集合，含省级台与网络频道"
+    },
+    {
+      "name": "广东电信IPTV",
+      "url": "https://raw.githubusercontent.com/YueChan/Live/main/GNTV.m3u",
+      "kind": "m3u",
+      "comment": "YueChan/Live 维护的广东电信直播列表（http 频道占比过低时自动剔除）"
+    },
+    {
+      "name": "北京联通IPTV",
+      "url": "https://raw.githubusercontent.com/YueChan/Live/main/IPTV.m3u",
+      "kind": "m3u",
+      "comment": "YueChan/Live 北京联通列表（多为 rtp 组播，公网不可播将自动剔除）"
+    },
+    {
+      "name": "肥羊IPv6",
+      "url": "https://live.fanmingming.com/tv/m3u/ipv6.m3u",
+      "kind": "m3u",
+      "epg": "https://live.fanmingming.com/e.xml",
+      "comment": "肥羊直播（外部域名，不走 GitHub 加速；IPv6 网络环境可用性最佳，附带 EPG）"
+    }
   ]
 }

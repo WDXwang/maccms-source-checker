@@ -41,6 +41,12 @@ const CONCURRENCY = 8;
 const SEARCH_WORDS = ['三体', '西游记', '爱情', '风云']; // 依次尝试，命中即通过
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
 
+// 直播源检测参数
+const ACCEL_PREFIX = 'https://ghfast.top/'; // 国内加速前缀（GitHub 托管地址专用）
+const LIVE_PROBE_TIMEOUT = 5000;  // 频道探测超时
+const LIVE_PROBE_SAMPLE = 8;      // 每个直播源抽样探测的频道数（按分组取首频道）
+const LIVE_MIN_HTTP_CHANNELS = 10; // 低于此数的 http 频道视为组播为主、不可公网播放
+
 // ---------- 工具 ----------
 function log(msg) {
   console.log(`[${new Date().toISOString().slice(11, 19)}] ${msg}`);
@@ -292,15 +298,139 @@ async function runPool(tasks, limit) {
   return ret;
 }
 
+// ---------- 直播（TV）源检测 ----------
+// GitHub 托管的地址加上国内加速前缀（应用端实际使用加速地址，检测也针对加速地址）
+function isGithubHosted(url) {
+  return /^https?:\/\/(raw\.githubusercontent\.com|gist\.githubusercontent\.com)\//i.test(url)
+    || /^https?:\/\/github\.com\/[^/]+\/[^/]+\/(raw|releases\/download)\//i.test(url);
+}
+
+function accelerate(url) {
+  return isGithubHosted(url) ? ACCEL_PREFIX + url : url;
+}
+
+function guessLiveKind(url) {
+  return /\.m3u8?($|\?)/i.test(url) ? 'm3u' : 'txt';
+}
+
+// 解析直播列表（m3u / tvbox txt 两种格式），返回 http(s) 可公网播放的频道
+function parseLiveList(text, kind) {
+  const channels = [];
+  const groups = new Set();
+  if (kind === 'txt') {
+    let group = '其他';
+    for (const raw of String(text).split(/\r?\n/)) {
+      const t = raw.trim();
+      if (!t) continue;
+      if (t.endsWith('#genre#')) { group = t.split(',')[0].trim() || group; groups.add(group); continue; }
+      const cIdx = t.indexOf(',');
+      if (cIdx > 0) {
+        const name = t.slice(0, cIdx).trim();
+        const url = t.slice(cIdx + 1).trim();
+        if (name && /^https?:\/\//i.test(url)) channels.push({ name, url, group });
+      }
+    }
+  } else {
+    const lines = String(text).split(/\r?\n/);
+    for (let i = 0; i < lines.length; i++) {
+      const t = lines[i].trim();
+      if (!t.startsWith('#EXTINF')) continue;
+      const gm = t.match(/group-title="([^"]*)"/);
+      const group = gm ? gm[1].trim() : '其他';
+      const name = t.slice(t.lastIndexOf(',') + 1).trim();
+      let url = '';
+      for (let j = i + 1; j < lines.length; j++) {
+        const n = lines[j].trim();
+        if (!n) continue;
+        if (n.startsWith('#')) continue; // 跳过 EXTVLCOPT 等附加指令
+        url = n;
+        i = j;
+        break;
+      }
+      if (name && /^https?:\/\//i.test(url)) { groups.add(group); channels.push({ name, url, group }); }
+    }
+  }
+  return { channels, groups: Array.from(groups) };
+}
+
+// 频道可达性探测：拿到 2xx/3xx 响应即视为可达（不下载完整流）
+async function probeChannel(url) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), LIVE_PROBE_TIMEOUT);
+  try {
+    const res = await fetch(url, {
+      signal: ctrl.signal,
+      headers: { 'User-Agent': 'okhttp/4.9.3' },
+      redirect: 'follow',
+    });
+    if (res.status < 400) {
+      try { await res.body?.cancel(); } catch {}
+      return true;
+    }
+    try { await res.body?.cancel(); } catch {}
+    return false;
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function verifyLive(up) {
+  const target = accelerate(up.url);
+  const started = Date.now();
+  try {
+    const res = await fetchWithTimeout(target, { timeout: 30000 });
+    if (!res.ok) return { name: up.name, rawUrl: up.url, status: 'unreachable', fail: `HTTP ${res.status}` };
+    const kind = up.kind || guessLiveKind(up.url);
+    const list = parseLiveList(res.text, kind);
+    if (list.channels.length < LIVE_MIN_HTTP_CHANNELS) {
+      return { name: up.name, rawUrl: up.url, status: 'no_http_channels', fail: `仅 ${list.channels.length} 个 http 频道（多为组播/特殊协议，公网不可播）` };
+    }
+    // 抽样探测：每个分组取首个频道，最多 LIVE_PROBE_SAMPLE 个
+    const picked = [];
+    const seenGroups = new Set();
+    for (const ch of list.channels) {
+      if (!seenGroups.has(ch.group)) { seenGroups.add(ch.group); picked.push(ch); if (picked.length >= LIVE_PROBE_SAMPLE) break; }
+    }
+    for (const ch of list.channels) {
+      if (picked.length >= LIVE_PROBE_SAMPLE) break;
+      if (!picked.includes(ch)) picked.push(ch);
+    }
+    const probe = await runPool(picked.map(ch => () => probeChannel(ch.url)), 6);
+    const probeOk = probe.filter(Boolean).length;
+    return {
+      name: up.name,
+      url: target,
+      rawUrl: up.url,
+      kind,
+      epg: up.epg || '',
+      channels: list.channels.length,
+      groups: list.groups.length,
+      probeOk,
+      probeTotal: picked.length,
+      probeRatio: picked.length ? Math.round((probeOk / picked.length) * 100) : 0,
+      status: 'ok',
+      ms: Date.now() - started,
+      comment: up.comment || '',
+    };
+  } catch (e) {
+    return { name: up.name, rawUrl: up.url, status: 'unreachable', fail: String(e.message || e).slice(0, 60) };
+  }
+}
+
 // ---------- 输出 ----------
-function buildOutputs(results) {
+function buildOutputs(results, liveResults = []) {
   const now = new Date().toISOString();
   const okList = results.filter(r => r.status === 'ok');
+  const liveOk = liveResults
+    .filter(r => r.status === 'ok')
+    .sort((a, b) => (b.probeRatio - a.probeRatio) || (b.channels - a.channels));
 
-  // TVBox 配置
+  // TVBox / FongMi 影视TV 配置（点播 sites + 直播 lives）
   const tvbox = {
-    name: '社区苹果CMS采集源(每日实测)',
-    notes: `检测时间 ${now}，共 ${okList.length} 个实测可用接口。仅供学习研究，请勿商用。`,
+    name: '星辰TVBox 每日实测源（点播+直播）',
+    notes: `检测时间 ${now}；点播 ${okList.length} 个实测可用接口，直播 ${liveOk.length} 个可用源。仅供学习研究，请勿商用。`,
     updated: now,
     sites: okList.map((r, i) => ({
       key: r.key || `s${i + 1}`,
@@ -311,6 +441,12 @@ function buildOutputs(results) {
       quickSearch: 1,
       filterable: 1,
     })),
+    lives: liveOk.map(r => {
+      const item = { name: `${r.name}（${r.channels}台）`, type: 0, url: r.url };
+      if (r.epg) item.epg = r.epg;
+      return item;
+    }),
+    notice: `配置每日 08:30 自动更新；如当前地址失效，可依次尝试：${ACCEL_PREFIX.slice(0, -1)} / gh-proxy.com / cdn.jsdelivr.net 加速的同一仓库路径`,
   };
 
   // LibreTV 自定义API清单（页面设置 → 自定义API 中逐个添加时的 name + api）
@@ -350,13 +486,28 @@ function buildOutputs(results) {
       return `| ${badge} | ${esc(r.name)} | \`${esc(r.api)}\` | ${r.total ?? '-'} | ${r.searchMs ?? '-'}ms | ${play} | ${esc(r.upstream)} |`;
     })
     .join('\n');
+
+  // 直播源报告
+  const liveRows = liveResults
+    .map(r => {
+      const badge = r.status === 'ok' ? '✅' : r.status === 'no_http_channels' ? '⚠️ 组播为主' : '❌ 不可达';
+      const esc = s => String(s ?? '').replace(/\|/g, '\\|').replace(/[\r\n]+/g, ' ');
+      const info = r.status === 'ok' ? `${r.channels} 台 / ${r.groups} 组 / 抽样 ${r.probeOk}/${r.probeTotal}` : esc(r.fail || r.status);
+      return `| ${badge} | ${esc(r.name)} | ${info} | ${r.status === 'ok' ? `${r.probeRatio}%` : '—'} | ${esc(r.rawUrl || r.url || '')} |`;
+    })
+    .join('\n');
+  const liveSection = liveResults.length
+    ? `\n## 直播（TV）源检测\n\n| 状态 | 名称 | 频道/分组/抽样 | 频道可达率 | 原始地址 |\n|---|---|---|---|---|\n${liveRows}\n\n> 抽样探测仅验证频道 HTTP 可达性，不等于实际可播放（部分源有地区/网络限制）。GitHub 托管的直播列表在配置中已替换为国内加速地址。\n`
+    : '';
+
   const report =
-    `# 苹果CMS采集接口检测报告\n\n` +
+    `# 采集接口与直播源检测报告\n\n` +
     `- **检测时间**：${now}\n` +
     `- **模式**：${FULL_MODE ? 'full（含播放流抽查）' : 'standard（连通+搜索+详情）'}\n` +
-    `- **结果**：${okList.length} 个可用 / 共检测 ${results.length} 个接口\n\n` +
-    `| 状态 | 名称 | 接口地址 | 片库总数 | 搜索耗时 | 播放抽查 | 来源 |\n|---|---|---|---|---|---|---|\n${rows}\n\n` +
-    `> 采集接口均来自公开社区分享，本工具仅做可用性检测，仅供学习研究，请勿用于商业用途。\n`;
+    `- **点播结果**：${okList.length} 个可用 / 共检测 ${results.length} 个接口\n` +
+    (liveResults.length ? `- **直播结果**：${liveOk.length} 个可用 / 共检测 ${liveResults.length} 个源\n` : '') +
+    `\n| 状态 | 名称 | 接口地址 | 片库总数 | 搜索耗时 | 播放抽查 | 来源 |\n|---|---|---|---|---|---|---|\n${rows}\n${liveSection}\n` +
+    `> 采集接口与直播列表均来自公开社区分享，本工具仅做可用性检测，仅供学习研究，请勿用于商业用途。\n`;
 
   const machine = {
     updated: now,
@@ -368,8 +519,11 @@ function buildOutputs(results) {
       noPlayUrl: results.filter(r => r.status === 'no_play_url').length,
       invalid: results.filter(r => r.status === 'invalid').length,
       unreachable: results.filter(r => r.status === 'unreachable').length,
+      liveTotal: liveResults.length,
+      liveOk: liveOk.length,
     },
     results,
+    liveResults,
   };
 
   return { tvbox, libretvApis, customerSiteJs, report, machine };
@@ -422,8 +576,22 @@ async function main() {
   // 3. 并发验证
   const results = await runPool(sources.map(s => () => validateSource(s)), CONCURRENCY);
 
+  // 3.5 直播（TV）源检测
+  let liveResults = [];
+  if (cfg.liveUpstreams && cfg.liveUpstreams.length) {
+    log(`开始直播（TV）源检测：${cfg.liveUpstreams.length} 个上游（GitHub 地址经 ${ACCEL_PREFIX} 加速后实测）`);
+    liveResults = await runPool(cfg.liveUpstreams.map(up => () => verifyLive(up)), 4);
+    const liveOk = liveResults.filter(r => r.status === 'ok');
+    for (const r of liveResults) {
+      log(r.status === 'ok'
+        ? `  ✅ ${r.name}：${r.channels} 台 / ${r.groups} 组 / 抽样可达 ${r.probeOk}/${r.probeTotal}`
+        : `  ❌ ${r.name}：${r.fail || r.status}`);
+    }
+    log(`直播源检测完成：${liveOk.length}/${liveResults.length} 个可用`);
+  }
+
   // 4. 生成并写盘
-  const out = buildOutputs(results);
+  const out = buildOutputs(results, liveResults);
   writeOutputs(out);
 
   const okCount = results.filter(r => r.status === 'ok').length;

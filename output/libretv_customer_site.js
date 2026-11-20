@@ -1,4 +1,4 @@
-// 由 maccms-source-checker 自动生成于 2026-11-19T08:40:02.515Z
+// 由 maccms-source-checker 自动生成于 2026-11-20T01:47:09.129Z
 // 检测通过 18/48 个接口。仅用于个人学习研究。
 const CUSTOMER_SITES = {
     s360zy: {

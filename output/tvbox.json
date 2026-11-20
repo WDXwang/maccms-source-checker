@@ -1,7 +1,7 @@
 {
-  "name": "社区苹果CMS采集源(每日实测)",
-  "notes": "检测时间 2026-11-19T08:40:02.515Z，共 18 个实测可用接口。仅供学习研究，请勿商用。",
-  "updated": "2026-11-19T08:40:02.515Z",
+  "name": "星辰TVBox 每日实测源（点播+直播）",
+  "notes": "检测时间 2026-11-20T01:47:09.129Z；点播 18 个实测可用接口，直播 4 个可用源。仅供学习研究，请勿商用。",
+  "updated": "2026-11-20T01:47:09.129Z",
   "sites": [
     {
       "key": "s1",
@@ -165,5 +165,28 @@
       "quickSearch": 1,
       "filterable": 1
     }
-  ]
+  ],
+  "lives": [
+    {
+      "name": "聚合直播IPTV4（342台）",
+      "type": 0,
+      "url": "https://ghfast.top/https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u"
+    },
+    {
+      "name": "直播聚合lite（7074台）",
+      "type": 0,
+      "url": "https://ghfast.top/https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/bbxx365_lite.txt"
+    },
+    {
+      "name": "全球中文台（513台）",
+      "type": 0,
+      "url": "https://ghfast.top/https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn.m3u"
+    },
+    {
+      "name": "广东电信IPTV（132台）",
+      "type": 0,
+      "url": "https://ghfast.top/https://raw.githubusercontent.com/YueChan/Live/main/GNTV.m3u"
+    }
+  ],
+  "notice": "配置每日 08:30 自动更新；如当前地址失效，可依次尝试：https://ghfast.top / gh-proxy.com / cdn.jsdelivr.net 加速的同一仓库路径"
 }

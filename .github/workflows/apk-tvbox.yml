@@ -1,0 +1,69 @@
+name: Build TVBox APK
+
+on:
+  workflow_dispatch: # 支持手动触发
+  push:
+    branches: [main]
+    paths:
+      - 'tvbox/**'
+      - '.github/workflows/apk-tvbox.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Download FongMi/TV source (pinned)
+        run: |
+          curl -sSL "https://codeload.github.com/FongMi/TV/zip/5bf18d6ae8b0ccd9b753ef98f932838de2eb7254" -o fongmi.zip
+          unzip -q fongmi.zip -d fongmi-src
+          srcdir="$(find fongmi-src -mindepth 1 -maxdepth 1 -type d | head -1)"
+          echo "srcdir=$srcdir" >> "$GITHUB_ENV"
+          echo "源码目录: $srcdir"
+
+      - name: Apply personal patches (内置源 + 签名 + 应用名)
+        run: node tvbox/patch-fongmi.mjs "$srcdir" --repo-root "$GITHUB_WORKSPACE"
+
+      - name: Build mobile & leanback release
+        run: |
+          cd "$srcdir"
+          chmod +x gradlew
+          ./gradlew :app:assembleMobileRelease :app:assembleLeanbackRelease --no-daemon --stacktrace
+
+      - name: Collect APKs
+        run: |
+          mkdir -p tvbox-dist
+          find "$srcdir/app/build/outputs/apk" -name '*.apk' -path '*release*' | while read -r f; do
+            base="$(basename "$f")"
+            case "$f" in
+              *mobile*) flavor="mobile" ;;
+              *leanback*) flavor="tv" ;;
+              *) flavor="unknown" ;;
+            esac
+            case "$base" in
+              *arm64*) abi="arm64" ;;
+              *v7a*) abi="v7a" ;;
+              *) abi="universal" ;;
+            esac
+            cp "$f" "tvbox-dist/XCTV-${flavor}-${abi}.apk"
+          done
+          ls -la tvbox-dist
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TVBox-apk
+          path: tvbox-dist/*
+          if-no-files-found: error
