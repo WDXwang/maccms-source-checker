@@ -1174,16 +1174,23 @@ function removeGoneInBlock(relPath, anchorId) {
   let idx = -1;
   for (let i = 0; i < lines.length; i++) if (lines[i].includes(`@+id/${anchorId}`)) { idx = i; break; }
   if (idx < 0) throw new Error(`锚点缺失 @ ${relPath} :: id/${anchorId}`);
-  // 从 id 行向后到元素结束行（含 />）删除 gone 行
+  // 从 id 行向后到元素结束行（含 />）处理
   let end = idx;
   while (end < lines.length - 1 && !lines[end].includes('/>')) end++;
-  const removed = [];
+  let changed = false;
   for (let i = idx; i <= end; i++) {
-    if (lines[i].includes('android:visibility="gone"') || lines[i].includes('tools:visibility="visible"')) removed.push(lines[i]);
+    const line = lines[i];
+    if (line.includes('android:visibility="gone"') && !line.includes('/>')) {
+      lines[i] = null; // 整行删除（该行不含元素结束符）
+      changed = true;
+    } else if (line.includes('tools:visibility="visible"') && line.includes('/>')) {
+      // 该行含元素结束符：只去掉属性，保留 "/>"
+      lines[i] = line.replace(/tools:visibility="visible"\s*/, '');
+      changed = true;
+    }
   }
-  if (!removed.length) { log('skip(no gone)', anchorId, relPath); return; }
-  const kept = lines.filter(l => !removed.includes(l));
-  writeF(f, kept.join('\n'));
+  if (!changed) { log('skip(no gone)', anchorId, relPath); return; }
+  writeF(f, lines.filter(l => l !== null).join('\n'));
   log('gone removed for button:', anchorId, '@', relPath);
 }
 
