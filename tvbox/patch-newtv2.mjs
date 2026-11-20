@@ -602,7 +602,9 @@ for (const vdir of ['values', 'values-zh-rCN', 'values-zh-rTW']) {
 // ============================================================
 {
   if (KEYSTORE && fs.existsSync(KEYSTORE)) {
-    const ksDir = path.join(SRC, 'keystore');
+    // 注意：NewTV2 的 app/build.gradle 用 file(localProps['storeFile']) 解析路径，
+    // 相对路径以 app/ 模块目录为基准，故 keystore 必须放在 app/keystore/ 下。
+    const ksDir = path.join(SRC, 'app', 'keystore');
     ensureDir(path.join(ksDir, 'x.tmp'));
     const ksDst = path.join(ksDir, 'tvbox.p12');
     fs.copyFileSync(KEYSTORE, ksDst);

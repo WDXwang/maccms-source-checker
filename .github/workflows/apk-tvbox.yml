@@ -76,14 +76,15 @@ jobs:
             --keystore tvbox/keystore/tvbox.p12 \
             --config-url "$CONFIG_URL"
 
-      - name: Build leanback (TV) & mobile release
+      - name: Build mobile (phone) release first
         run: |
           cd "$NEWTV2_DIR"
           chmod +x gradlew
           ver_name="1.0.xctv.$(date -u +%Y%m%d)"
           ver_code=$(( $(date -u +%s) - 1700000000 ))
           echo "VERSION_NAME=$ver_name" >> "$GITHUB_ENV"
-          ./gradlew :app:assembleLeanbackRelease :app:assembleMobileRelease \
+          # 先只构建手机端（双端同源，TV 端待手机端验证成功后触发）
+          ./gradlew :app:assembleMobileRelease \
             -PappVersionName="$ver_name" \
             -PappVersionCode="$ver_code" \
             --no-configuration-cache --no-daemon --stacktrace
@@ -106,7 +107,7 @@ jobs:
             cp "$f" "tvbox-dist/XCTV-${flavor}-${abi}.apk"
           done
           ls -la tvbox-dist
-          [ "$(ls tvbox-dist/*.apk 2>/dev/null | wc -l)" -ge 2 ] || { echo "APK 数量异常"; exit 1; }
+          [ "$(ls tvbox-dist/*.apk 2>/dev/null | wc -l)" -ge 1 ] || { echo "APK 数量异常"; exit 1; }
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
