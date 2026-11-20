@@ -622,3 +622,262 @@ for (const vdir of ['values', 'values-zh-rCN', 'values-zh-rTW']) {
 }
 
 log('ALL PATCHES DONE ✔');
+
+// ============================================================
+// 5.5) API 回移：NewTV2 裁剪直播时删除的相关 API，逐个补回
+//      （方法体取自上游 5.8.7 同源实现；纯文本锚点替换）
+// ============================================================
+function patchFile(rel, fn) {
+  const f = path.join(SRC, rel);
+  let c = readF(f);
+  c = fn(f, c);
+  writeF(f, c);
+}
+
+// A. Result：timeshift 字段 + getter/setter
+patchFile('app/src/main/java/com/fongmi/android/tv/bean/Result.java', (f, c) => {
+  if (c.includes('getTimeshift')) return c;
+  c = mustReplace(f, c, 'public class Result', `public class Result {\n\n    @SerializedName("timeshift")\n    private Timeshift timeshift;`, 'Result timeshift field');
+  const tail = c.trimEnd();
+  if (!tail.endsWith('}')) throw new Error('锚点缺失 @ Result :: tail }');
+  c = tail.slice(0, -1).trimEnd() + '\n\n    public Timeshift getTimeshift() {\n        return timeshift;\n    }\n\n    public void setTimeshift(Timeshift timeshift) {\n        this.timeshift = timeshift;\n    }\n}\n';
+  return c;
+});
+
+// B. MediaItemFactory：buildLiveMetadata
+patchFile('app/src/main/java/com/fongmi/android/tv/player/media/MediaItemFactory.java', (f, c) => {
+  if (c.includes('buildLiveMetadata')) return c;
+  if (!c.includes('import com.fongmi.android.tv.bean.EpgData;')) {
+    c = mustReplace(f, c, 'import com.fongmi.android.tv.bean.', 'import com.fongmi.android.tv.bean.EpgData;\nimport com.fongmi.android.tv.bean.', 'MediaItemFactory import EpgData');
+  }
+  return mustReplace(f, c, 'public static Uri getArtworkUri', `public static MediaMetadata buildLiveMetadata(String title, @Nullable EpgData data, String artUri) {
+        String details = data == null ? "" : data.format();
+        return buildMetadata(title, details, artUri).buildUpon().setStation(title).setDisplayTitle(title).setMediaType(MediaMetadata.MEDIA_TYPE_TV_CHANNEL).build();
+    }
+
+    public static Uri getArtworkUri`, 'MediaItemFactory buildLiveMetadata');
+});
+
+// C. PlayerSetting：scale 缩放 API
+patchFile('app/src/main/java/com/fongmi/android/tv/setting/PlayerSetting.java', (f, c) => {
+  if (c.includes('getScale()')) return c;
+  if (!c.includes('RESIZE_MODE_FILL')) {
+    c = mustReplace(f, c, 'import', 'import static androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FILL;\nimport static androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FIT;\nimport static androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_ZOOM;\n\nimport', 'PlayerSetting resize imports');
+  }
+  return mustReplace(f, c, 'public static int getBackground()', `public static final int MIN_SCALE = 0;
+    public static final int MAX_SCALE = 2;
+
+    public static int getScale() {
+        return Math.clamp(Prefers.getInt("scale"), MIN_SCALE, MAX_SCALE);
+    }
+
+    public static void putScale(int scale) {
+        Prefers.put("scale", Math.clamp(scale, MIN_SCALE, MAX_SCALE));
+    }
+
+    public static int getScaleMode(int index) {
+        return index == 1 ? RESIZE_MODE_FILL : index == 2 ? RESIZE_MODE_ZOOM : RESIZE_MODE_FIT;
+    }
+
+    public static int getBackground()`, 'PlayerSetting scale api');
+});
+
+// D. Constant：直播超时常量
+patchFile('app/src/main/java/com/fongmi/android/tv/Constant.java', (f, c) => {
+  if (c.includes('TIMEOUT_LIVE')) return c;
+  return mustReplace(f, c, 'public static final long TIMEOUT_VOD', `public static final long TIMEOUT_VOD = TimeUnit.SECONDS.toMillis(30);
+    public static final long TIMEOUT_LIVE = TimeUnit.SECONDS.toMillis(30);
+    public static final long TIMEOUT_EPG = TimeUnit.SECONDS.toMillis(5);
+    public static final long TIMEOUT_PARSE_LIVE = TimeUnit.SECONDS.toMillis(10);`, 'Constant live timeouts');
+});
+
+// E. Config.live()：读取 type=1 直播配置
+patchFile('app/src/main/java/com/fongmi/android/tv/bean/Config.java', (f, c) => {
+  if (c.includes('public static Config live()')) return c;
+  return mustReplace(f, c, 'public static List<Config> findUrls()', `public static Config live() {
+        String url = Prefers.getString("config_1");
+        Config item = TextUtils.isEmpty(url) ? null : AppDatabase.get().getConfigDao().find(url, 1);
+        if (item == null) item = AppDatabase.get().getConfigDao().findOne(1);
+        return item == null ? create(1) : item;
+    }
+
+    public static List<Config> findUrls()`, 'Config live()');
+});
+
+// F. ConfigEvent：LIVE/BOOT 事件
+patchFile('app/src/main/java/com/fongmi/android/tv/event/ConfigEvent.java', (f, c) => {
+  if (c.includes('Type.LIVE')) return c;
+  c = mustReplace(f, c, 'import org.greenrobot.eventbus.EventBus;', 'import com.fongmi.android.tv.setting.LiveSetting;\n\nimport org.greenrobot.eventbus.EventBus;', 'ConfigEvent import LiveSetting');
+  c = mustReplace(f, c, 'public static void vod() {\n        EventBus.getDefault().post(new ConfigEvent(Type.VOD));\n    }', `public static void vod() {
+        EventBus.getDefault().post(new ConfigEvent(Type.VOD));
+    }
+
+    public static void live() {
+        EventBus.getDefault().post(new ConfigEvent(Type.LIVE));
+    }
+
+    public static void boot() {
+        EventBus.getDefault().post(new ConfigEvent(Type.BOOT));
+        LiveSetting.putBoot(false);
+    }
+
+    public boolean isLive() {
+        return type == Type.LIVE;
+    }`, 'ConfigEvent live/boot');
+  return mustReplace(f, c, 'enum Type {\n        COMMON, VOD\n    }', 'enum Type {\n        COMMON, VOD, LIVE, BOOT\n    }', 'ConfigEvent Type enum');
+});
+
+// G. Keep：直播收藏 API（type 字段 NT 已有）
+patchFile('app/src/main/java/com/fongmi/android/tv/bean/Keep.java', (f, c) => {
+  if (c.includes('public static boolean exist(String key)')) return c;
+  const tail = c.trimEnd();
+  if (!tail.endsWith('}')) throw new Error('锚点缺失 @ Keep :: tail }');
+  const add = [];
+
+  if (!c.includes('public void setType(int')) add.push('    public void setType(int type) {\n        this.type = type;\n    }');
+  if (!c.includes('public int getType()')) add.push('    public int getType() {\n        return type;\n    }');
+  add.push(`    public static boolean exist(String key) {
+        return AppDatabase.get().getKeepDao().find(key) != null;
+    }
+
+    public static List<Keep> getLive() {
+        return AppDatabase.get().getKeepDao().getLive();
+    }
+
+    public static void delete(String key) {
+        AppDatabase.get().getKeepDao().delete(key);
+    }`);
+  return tail.slice(0, -1).trimEnd() + '\n\n' + add.join('\n\n') + '\n}\n';
+});
+
+// H. KeepDao：直播查询
+patchFile('app/src/main/java/com/fongmi/android/tv/db/dao/KeepDao.java', (f, c) => {
+  if (c.includes('List<Keep> getLive()')) return c;
+  return mustReplace(f, c, 'public abstract Keep find(int cid, String key);', `public abstract Keep find(int cid, String key);
+
+    @Query("SELECT * FROM Keep WHERE type = 1 AND \`key\` = :key")
+    public abstract Keep find(String key);
+
+    @Query("SELECT * FROM Keep WHERE type = 1 ORDER BY createTime DESC")
+    public abstract List<Keep> getLive();
+
+    @Query("DELETE FROM Keep WHERE type = 1 AND \`key\` = :key")
+    public abstract void delete(String key);`, 'KeepDao live queries');
+});
+
+// I. PlayerEngineDialog：setText（NewTV2 无引擎文本概念，空实现保持兼容）
+patchFile('app/src/main/java/com/fongmi/android/tv/ui/dialog/PlayerEngineDialog.java', (f, c) => {
+  if (c.includes('public static void setText(TextView view)')) return c;
+  c = mustReplace(f, c, 'import android.view.LayoutInflater;', 'import android.view.LayoutInflater;\nimport android.widget.TextView;', 'PlayerEngineDialog import TextView');
+  return mustReplace(f, c, 'public static void show(FragmentActivity activity)', `public static void setText(TextView view) {
+        if (view != null) view.setText("");
+    }
+
+    public static void setText(TextView view, PlayerManager player) {
+        setText(view);
+    }
+
+    public static void show(FragmentActivity activity)`, 'PlayerEngineDialog setText');
+});
+
+// J. PlaybackAction：setPlaybackMode（空实现，引擎切换逻辑在 PlayerManager 内部）
+patchFile('app/src/main/java/com/fongmi/android/tv/playback/PlaybackAction.java', (f, c) => {
+  if (c.includes('setPlaybackMode')) return c;
+  return mustReplace(f, c, 'public static float toggleSpeed(PlayerManager player, TextView view)', `public static void setPlaybackMode(PlayerManager player, TextView engine) {
+        if (engine != null) engine.setText("");
+    }
+
+    public static float toggleSpeed(PlayerManager player, TextView view)`, 'PlaybackAction setPlaybackMode');
+});
+
+// K. HistoryDialog（leanback + mobile）：live()
+for (const ss of ['leanback', 'mobile']) {
+  const rel = `app/src/${ss}/java/com/fongmi/android/tv/ui/dialog/HistoryDialog.java`;
+  if (!fs.existsSync(path.join(SRC, rel))) { log('warn: no HistoryDialog @', ss); continue; }
+  patchFile(rel, (f, c) => {
+    if (c.includes('public HistoryDialog live()')) return c;
+    return mustReplace(f, c, 'public HistoryDialog vod()', `public HistoryDialog live() {
+        type = 1;
+        return this;
+    }
+
+    public HistoryDialog vod()`, `HistoryDialog live @ ${ss}`);
+  });
+}
+
+// L. BrowseTree：直播媒体浏览分支 + LiveMetadata 支撑方法
+patchFile('app/src/main/java/com/fongmi/android/tv/browse/BrowseTree.java', (f, c) => {
+  if (c.includes('LIVE_KEEP')) return c;
+  c = mustReplace(f, c, 'import com.fongmi.android.tv.player.media.MediaItemFactory;', 'import com.fongmi.android.tv.browse.LiveBrowse;\nimport com.fongmi.android.tv.player.media.MediaItemFactory;', 'BrowseTree import LiveBrowse');
+  c = mustReplace(f, c, 'private static final String VOD = "VOD";', 'private static final String VOD = "VOD";\n    private static final String LIVE = "LIVE";\n    public static final String LIVE_KEEP = "LIVE_KEEP";', 'BrowseTree LIVE consts');
+  // LIVE_FOLDER：VOD_FOLDER 行含繁简中文差异，按行定位后插入
+  {
+    const lines = c.split('\n');
+    const idx = lines.findIndex(l => l.includes('VOD_FOLDER = build(VOD'));
+    if (idx < 0) throw new Error('锚点缺失 @ BrowseTree :: VOD_FOLDER line');
+    const block = [
+      '    private static final MediaItem LIVE_FOLDER;',
+      '',
+      '    static {',
+      '        Bundle extras = new Bundle();',
+      '        extras.putInt(CONTENT_STYLE_BROWSABLE_HINT, CONTENT_STYLE_LIST);',
+      '        MediaMetadata meta = new MediaMetadata.Builder().setTitle("直播").setArtworkUri(Uri.parse(icon(R.drawable.ic_nav_live))).setIsBrowsable(true).setIsPlayable(false).setMediaType(MediaMetadata.MEDIA_TYPE_FOLDER_MIXED).setExtras(extras).build();',
+      '        LIVE_FOLDER = new MediaItem.Builder().setMediaId(LIVE).setMediaMetadata(meta).build();',
+      '    }',
+    ].join('\n');
+    lines.splice(idx + 1, 0, block);
+    c = lines.join('\n');
+  }
+  c = mustReplace(f, c, 'case ROOT -> ImmutableList.of(VOD_FOLDER);', 'case ROOT -> ImmutableList.of(VOD_FOLDER, LIVE_FOLDER);', 'BrowseTree ROOT case');
+  c = mustReplace(f, c, 'case VOD_KEEP -> VodBrowse.getFavorites();', `case VOD_KEEP -> VodBrowse.getFavorites();
+            case LIVE -> ImmutableList.<MediaItem>builder().add(getItem(LIVE_KEEP)).addAll(LiveBrowse.getGroups()).build();
+            case LIVE_KEEP -> LiveBrowse.getFavorites();`, 'BrowseTree LIVE cases');
+  c = mustReplace(f, c, 'if (parentId.startsWith(VodBrowse.VOD_DETAIL)) yield VodBrowse.getEpisodes(parentId);', `if (parentId.startsWith(LiveBrowse.LIVE_GROUP)) yield LiveBrowse.getChannels(parentId);
+                if (parentId.startsWith(VodBrowse.VOD_DETAIL)) yield VodBrowse.getEpisodes(parentId);`, 'BrowseTree default LIVE');
+  // LiveMetadata 支撑方法（文件尾追加）
+  const tail = c.trimEnd();
+  if (!tail.endsWith('}')) throw new Error('锚点缺失 @ BrowseTree :: tail }');
+  c = tail.slice(0, -1).trimEnd() + `
+
+    @Nullable
+    public static MediaMetadata loadLiveMetadata(String mediaId) {
+        return LiveBrowse.loadMetadata(mediaId);
+    }
+
+    @Nullable
+    public static String getLiveGroupId(String mediaId) {
+        int separator = mediaId.lastIndexOf('|');
+        return mediaId.startsWith(LiveBrowse.LIVE_CH) && separator >= LiveBrowse.LIVE_CH.length()
+                ? LiveBrowse.LIVE_GROUP + mediaId.substring(LiveBrowse.LIVE_CH.length(), separator) : null;
+    }
+}
+`;
+  return c;
+});
+
+// M. LiveActivity（leanback + mobile）：删除 customWall override（NewTV2 BaseActivity 无壁纸体系）
+for (const ss of ['leanback', 'mobile']) {
+  const rel = `app/src/${ss}/java/com/fongmi/android/tv/ui/activity/LiveActivity.java`;
+  if (!fs.existsSync(path.join(SRC, rel))) continue;
+  patchFile(rel, (f, c) => {
+    if (!c.includes('customWall')) return c;
+    return mustReplace(f, c, `    @Override
+    protected boolean customWall() {
+        return false;
+    }
+
+`, '', `LiveActivity customWall removal @ ${ss}`);
+  });
+}
+
+// N. ic_nav_live 资源（上游有，闭包未覆盖——BrowseTree LIVE_FOLDER 引用）
+{
+  const srcIcon = path.join(UP, 'app/src/main/res/drawable/ic_nav_live.xml');
+  const dstIcon = path.join(SRC, 'app/src/main/res/drawable/ic_nav_live.xml');
+  if (fs.existsSync(srcIcon) && !fs.existsSync(dstIcon)) {
+    fs.copyFileSync(srcIcon, dstIcon);
+    log('res copied: drawable/ic_nav_live.xml');
+  }
+}
+
+log('API BACKPORT DONE ✔');
