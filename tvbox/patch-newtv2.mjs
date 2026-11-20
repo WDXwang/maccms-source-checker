@@ -63,27 +63,36 @@ for (const item of closure.javaCopy) {
 log(`java copied: ${javaCount}`);
 
 // ============================================================
-// 2) 复制直播资源文件（仅 NewTV2 缺失的）
+// 2) 复制直播资源文件 —— 按上游 sourceSet 对应复制（不统一进 main）
+//    原因：直播 layout 上游是 leanback/mobile 双版本（如 activity_live.xml），
+//    leanback 版引用 CustomLiveListView 等 leanback-only 类；
+//    若复制进 main 会让 mobile variant 编译失败（binding 生成引用不可见类）。
 // ============================================================
 let resCount = 0;
 for (const rel of closure.fileRes) {
-  // 找上游实际位置（优先 main，其次 leanback/mobile）
-  let srcFile = null, ssUsed = 'main';
   for (const ss of SRCSETS) {
-    const p = path.join(UP, 'app/src', ss, 'res', rel);
-    if (fs.existsSync(p)) { srcFile = p; ssUsed = ss; break; }
+    const srcFile = path.join(UP, 'app/src', ss, 'res', rel);
+    if (!fs.existsSync(srcFile)) continue;
+    const dst = path.join(SRC, 'app/src', ss, 'res', rel);
+    if (fs.existsSync(dst)) continue; // 同 sourceSet 已有（NT 自带同名），跳过
+    ensureDir(dst);
+    fs.copyFileSync(srcFile, dst);
+    resCount++;
   }
-  if (!srcFile) { log('warn: upstream res not found', rel); continue; }
-  // NewTV2 已有同名资源则跳过（用 NewTV2 版本，避免覆盖其定制）
-  let ntHas = false;
-  for (const ss of SRCSETS) if (fs.existsSync(path.join(SRC, 'app/src', ss, 'res', rel))) { ntHas = true; break; }
-  if (ntHas) { log('skip(res exists)', rel); continue; }
-  const dst = path.join(SRC, 'app/src/main/res', rel);
-  ensureDir(dst);
-  fs.copyFileSync(srcFile, dst);
-  resCount++;
 }
 log(`res copied: ${resCount}`);
+
+// 2.1) NT main 的 DanmakuSearchAdapter / FilterChipAdapter 引用的 layout 只在
+//      NT leanback/res/layout，mobile variant 缺 binding —— 复制到 main/res/layout（两 flavor 共用）
+for (const lay of ['adapter_danmaku_search.xml', 'adapter_filter_chip.xml']) {
+  const srcFile = path.join(SRC, 'app/src/leanback/res/layout', lay);
+  const dst = path.join(SRC, 'app/src/main/res/layout', lay);
+  if (fs.existsSync(srcFile) && !fs.existsSync(dst)) {
+    ensureDir(dst);
+    fs.copyFileSync(srcFile, dst);
+    log('layout copied to main:', lay);
+  }
+}
 
 // ============================================================
 // 2.5) 协议 AAR 复制：闭包文件依赖上游协议库（如 Core -> com.fongmi.hook）
@@ -909,6 +918,91 @@ patchFile('app/src/main/java/com/fongmi/android/tv/event/RefreshEvent.java', (f,
 
     public static void theme() {`, 'RefreshEvent live()');
   return mustReplace(f, c, 'SUBTITLE, DANMAKU', 'SUBTITLE, DANMAKU, LIVE', 'RefreshEvent Type LIVE');
+});
+
+// ============================================================
+// Q. 手机端手势三件套：用上游版覆盖 NT 的（NT 的 PinchScale 是
+//    package-private 且无 Axis 枚举，mobile LiveActivity 编译不过）
+// ============================================================
+for (const cls of ['PinchScale.java', 'PinchScaleFeedback.java', 'TouchInput.java']) {
+  const srcFile = path.join(UP, 'app/src/mobile/java/com/fongmi/android/tv/ui/custom', cls);
+  const dst = path.join(SRC, 'app/src/mobile/java/com/fongmi/android/tv/ui/custom', cls);
+  if (!fs.existsSync(srcFile)) throw new Error(`上游手势类缺失: ${cls}`);
+  fs.copyFileSync(srcFile, dst);
+  log('mobile gesture class replaced:', cls);
+}
+
+// R. 自建 androidx.media3.common.VideoTransform（上游私有 AAR 才有此类，
+//    NewTV2 配套 AAR 缺失；自建值对象保 TouchInput 编译）
+{
+  const vtDir = path.join(SRC, 'app/src/main/java/androidx/media3/common');
+  const vtFile = path.join(vtDir, 'VideoTransform.java');
+  if (!fs.existsSync(vtFile)) {
+    ensureDir(vtFile);
+    writeF(vtFile, `package androidx.media3.common;
+
+/**
+ * 本地自建值对象：上游 FongMi/TV 的私有 media3 AAR 内含 VideoTransform（画面缩放/平移），
+ * NewTV2 配套 AAR 无此类。为使手机端 TouchInput 手势编译而重建，仅保留值语义，
+ * 实际画面变换由 PlayerView 决定（本 AAR 不支持时手势反馈仍正常、画面不变换）。
+ */
+public final class VideoTransform {
+
+    public static final VideoTransform DEFAULT = new VideoTransform(1f, 1f, 0f, 0f);
+
+    public final float scaleX;
+    public final float scaleY;
+    public final float panX;
+    public final float panY;
+
+    public VideoTransform(float scaleX, float scaleY, float panX, float panY) {
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+        this.panX = panX;
+        this.panY = panY;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VideoTransform)) return false;
+        VideoTransform that = (VideoTransform) o;
+        return scaleX == that.scaleX && scaleY == that.scaleY && panX == that.panX && panY == that.panY;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Float.floatToIntBits(scaleX);
+        result = 31 * result + Float.floatToIntBits(scaleY);
+        result = 31 * result + Float.floatToIntBits(panX);
+        result = 31 * result + Float.floatToIntBits(panY);
+        return result;
+    }
+}
+`);
+    log('VideoTransform stub created');
+  }
+}
+
+// S. TouchInput（上游版已覆盖）打补丁：AAR PlayerView 无 getVideoTransform /
+//    animateVideoTransform / setVideoTransform / finishVideoTransformAnimation /
+//    getVideoBounds —— 全部替换为本地 VideoTransform 状态 + view bounds
+patchFile('app/src/mobile/java/com/fongmi/android/tv/ui/custom/TouchInput.java', (f, c) => {
+  if (c.includes('private VideoTransform videoTransform = VideoTransform.DEFAULT;')) return c; // 已打补丁
+  c = mustReplace(f, c, '    private final PlayerView videoView;', `    private final PlayerView videoView;
+    /** 本地画面变换状态（AAR PlayerView 无该 API，仅维持值语义与手势反馈） */
+    private VideoTransform videoTransform = VideoTransform.DEFAULT;`, 'TouchInput local transform field');
+  c = mustReplace(f, c, '        if (!videoView.getVideoTransform().equals(VideoTransform.DEFAULT)) videoView.animateVideoTransform(VideoTransform.DEFAULT, 250);', '        if (!videoTransform.equals(VideoTransform.DEFAULT)) videoTransform = VideoTransform.DEFAULT;', 'TouchInput resetScale');
+  c = mustReplace(f, c, '        return !videoView.getVideoTransform().equals(VideoTransform.DEFAULT);', '        return !videoTransform.equals(VideoTransform.DEFAULT);', 'TouchInput isScaled');
+  c = mustReplace(f, c, '        videoView.finishVideoTransformAnimation();\n        VideoTransform transform = videoView.getVideoTransform();', '        VideoTransform transform = videoTransform;', 'TouchInput onScaleBegin');
+  c = mustReplace(f, c, '        pinchContentBounds.set(videoView.getVideoBounds());', '        pinchContentBounds.set(0, 0, videoView.getWidth(), videoView.getHeight());', 'TouchInput pinchContentBounds');
+  c = mustReplace(f, c, '            VideoTransform target = videoTransform(pinchScale.getScaleX(), pinchScale.getScaleY(), releasedX, releasedY);\n            if (!target.equals(videoView.getVideoTransform())) videoView.animateVideoTransform(target, 180);', '            videoTransform = videoTransform(pinchScale.getScaleX(), pinchScale.getScaleY(), releasedX, releasedY);', 'TouchInput onScaleEnd');
+  c = mustReplace(f, c, '        videoView.setVideoTransform(videoTransform(pinchScale.getVisualScaleX(), pinchScale.getVisualScaleY(), translationX, translationY));', '        videoTransform = videoTransform(pinchScale.getVisualScaleX(), pinchScale.getVisualScaleY(), translationX, translationY);', 'TouchInput onScale');
+  // 残余引用兜底检查
+  if (c.includes('videoView.getVideoTransform') || c.includes('videoView.animateVideoTransform') || c.includes('videoView.setVideoTransform') || c.includes('videoView.finishVideoTransformAnimation') || c.includes('videoView.getVideoBounds')) {
+    throw new Error('TouchInput 仍残留 AAR 缺失方法调用');
+  }
+  return c;
 });
 
 log('API BACKPORT DONE ✔');
