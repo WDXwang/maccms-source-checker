@@ -86,6 +86,25 @@ for (const rel of closure.fileRes) {
 log(`res copied: ${resCount}`);
 
 // ============================================================
+// 2.5) 协议 AAR 复制：闭包文件依赖上游协议库（如 Core -> com.fongmi.hook）
+//      而 NewTV2 已裁掉这些协议 AAR，需从上游补回（同源 AAR 天然配套）
+// ============================================================
+{
+  const PROTO_AARS = ['hook-release.aar', 'tvbus-release.aar']; // 上游 5.8.7 自带的协议库
+  let copied = 0;
+  for (const aar of PROTO_AARS) {
+    const src = path.join(UP, 'app/libs', aar);
+    if (!fs.existsSync(src)) { log('warn: upstream proto aar missing', aar); continue; }
+    const dst = path.join(SRC, 'app/libs', aar);
+    if (fs.existsSync(dst)) continue;
+    fs.copyFileSync(src, dst);
+    copied++;
+    log('proto aar copied:', aar);
+  }
+  if (!copied) log('proto aars: nothing to copy');
+}
+
+// ============================================================
 // 3) values 增量合并（string/color/style/array 条目）
 // ============================================================
 function extractEntries(xmlText, tagName, names) {
