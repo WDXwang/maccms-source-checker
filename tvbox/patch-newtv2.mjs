@@ -156,6 +156,12 @@ for (const vdir of ['values', 'values-zh-rCN', 'values-zh-rTW']) {
   const names = [...upXml.matchAll(/<string\s+name="(dialog_action_live[^"]+)"/g)].map(m => m[1]);
   if (names.length) mergeValues(path.join(SRC, 'app/src/mobile/res', vdir, 'strings.xml'), upMob, 'string', names);
 }
+// PinchScaleFeedback 引用的 pinch_* string（上游 mobile 三语言各 4 条）
+for (const vdir of ['values', 'values-zh-rCN', 'values-zh-rTW']) {
+  const upMob = path.join(UP, 'app/src/mobile/res', vdir, 'strings.xml');
+  if (!fs.existsSync(upMob)) continue;
+  mergeValues(path.join(SRC, 'app/src/mobile/res', vdir, 'strings.xml'), upMob, 'string', ['pinch_zoom', 'pinch_width', 'pinch_height', 'pinch_size']);
+}
 
 // 兜底：关键 string 若上游没有则硬编码追加（中文）
 {
@@ -1006,3 +1012,26 @@ patchFile('app/src/mobile/java/com/fongmi/android/tv/ui/custom/TouchInput.java',
 });
 
 log('API BACKPORT DONE ✔');
+
+// ============================================================
+// T. mobile VideoActivity / CastDialog：适配上游手势接口与直播投屏
+// ============================================================
+// T1. VideoActivity：onPinchScale 旧签名改为上游 TouchInput.Listener 新签名（含 Axis）
+patchFile('app/src/mobile/java/com/fongmi/android/tv/ui/activity/VideoActivity.java', (f, c) => {
+  if (c.includes('onPinchScale(PinchScale.Axis axis')) return c;
+  if (!c.includes('import com.fongmi.android.tv.ui.custom.PinchScale;')) {
+    c = mustReplace(f, c, 'import com.fongmi.android.tv.ui.custom.PinchScaleFeedback;', 'import com.fongmi.android.tv.ui.custom.PinchScale;\nimport com.fongmi.android.tv.ui.custom.PinchScaleFeedback;', 'VideoActivity import PinchScale');
+  }
+  c = mustReplace(f, c, '    public void onPinchScale(float scaleX, float scaleY) {\n        if (!mScaleFeedback.isActive()) PlaybackAction.hideSpeedHint(mBinding.widget.message);\n        mScaleFeedback.show(scaleX, scaleY);\n    }', '    public void onPinchScale(PinchScale.Axis axis, float scaleX, float scaleY) {\n        if (!mScaleFeedback.isActive()) PlaybackAction.hideSpeedHint(mBinding.widget.message);\n        mScaleFeedback.show(axis, scaleX, scaleY);\n    }', 'VideoActivity onPinchScale signature');
+  return c;
+});
+
+// T2. CastDialog：补 createLive（上游 LiveActivity 投屏入口调用）
+patchFile('app/src/mobile/java/com/fongmi/android/tv/ui/dialog/CastDialog.java', (f, c) => {
+  if (c.includes('public static CastDialog createLive(')) return c;
+  return mustReplace(f, c, '    public static CastDialog create(PlayerManager player) {', `    public static CastDialog createLive(PlayerManager player) {
+        return createInternal(player, false);
+    }
+
+    public static CastDialog create(PlayerManager player) {`, 'CastDialog createLive');
+});
