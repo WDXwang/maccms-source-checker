@@ -637,7 +637,7 @@ function patchFile(rel, fn) {
 // A. Result：timeshift 字段 + getter/setter
 patchFile('app/src/main/java/com/fongmi/android/tv/bean/Result.java', (f, c) => {
   if (c.includes('getTimeshift')) return c;
-  c = mustReplace(f, c, 'public class Result', `public class Result {\n\n    @SerializedName("timeshift")\n    private Timeshift timeshift;`, 'Result timeshift field');
+  c = mustReplace(f, c, '    @Path("class")\n    @ElementList(entry = "ty", required = false, inline = true)', '    @SerializedName("timeshift")\n    private Timeshift timeshift;\n\n    @Path("class")\n    @ElementList(entry = "ty", required = false, inline = true)', 'Result timeshift field');
   const tail = c.trimEnd();
   if (!tail.endsWith('}')) throw new Error('锚点缺失 @ Result :: tail }');
   c = tail.slice(0, -1).trimEnd() + '\n\n    public Timeshift getTimeshift() {\n        return timeshift;\n    }\n\n    public void setTimeshift(Timeshift timeshift) {\n        this.timeshift = timeshift;\n    }\n}\n';
@@ -685,10 +685,7 @@ patchFile('app/src/main/java/com/fongmi/android/tv/setting/PlayerSetting.java', 
 // D. Constant：直播超时常量
 patchFile('app/src/main/java/com/fongmi/android/tv/Constant.java', (f, c) => {
   if (c.includes('TIMEOUT_LIVE')) return c;
-  return mustReplace(f, c, 'public static final long TIMEOUT_VOD', `public static final long TIMEOUT_VOD = TimeUnit.SECONDS.toMillis(30);
-    public static final long TIMEOUT_LIVE = TimeUnit.SECONDS.toMillis(30);
-    public static final long TIMEOUT_EPG = TimeUnit.SECONDS.toMillis(5);
-    public static final long TIMEOUT_PARSE_LIVE = TimeUnit.SECONDS.toMillis(10);`, 'Constant live timeouts');
+  return mustReplace(f, c, 'public static final long TIMEOUT_VOD = TimeUnit.SECONDS.toMillis(30);', 'public static final long TIMEOUT_VOD = TimeUnit.SECONDS.toMillis(30);\n    public static final long TIMEOUT_LIVE = TimeUnit.SECONDS.toMillis(30);\n    public static final long TIMEOUT_EPG = TimeUnit.SECONDS.toMillis(5);\n    public static final long TIMEOUT_PARSE_LIVE = TimeUnit.SECONDS.toMillis(10);', 'Constant live timeouts');
 });
 
 // E. Config.live()：读取 type=1 直播配置
