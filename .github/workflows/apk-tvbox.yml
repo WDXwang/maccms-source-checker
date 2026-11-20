@@ -13,7 +13,7 @@ permissions:
 
 env:
   # 涓婃父 FongMi/TV锛堝奖瑙員V锛夊浐瀹氱増鏈細5.8.7锛堜笌 AAR 濂椾欢 API 鍏煎鐨勭ǔ瀹氬熀绾匡級
-  UPSTREAM_SHA: '60e901aa0aeaaac41c3586b7f6c5989db5e4d5a4'
+  UPSTREAM_SHA: '2d84dc637908a0ca8e7b86a55da631b143c9cf6b'
   # NewTV2锛團ongMi/TV 5.8.7 娣卞害瀹氬埗鍒嗘敮锛夋彁浜ょ殑瀹屾暣绉佹湁 media3 AAR 濂椾欢
   # 锛堜笂娓?.gitignore 鎺掗櫎 lib-*.aar锛屽畼鏂规湭鍏紑鍙戝竷锛屾澶勫彇鑷ぞ鍖哄悓婧愬垎鏀級
   AAR_REPO: 'ctowl2018/NewTV2'
@@ -123,4 +123,5 @@ jobs:
           name: TVBox-apk
           path: tvbox-dist/*
           if-no-files-found: error
+
 
