@@ -1,17 +1,89 @@
-// 由 maccms-source-checker 自动生成于 2026-11-20T01:47:09.129Z
-// 检测通过 18/48 个接口。仅用于个人学习研究。
+// 由 maccms-source-checker 自动生成于 2026-11-21T07:36:51.770Z
+// 检测通过 35/53 个接口。仅用于个人学习研究。
 const CUSTOMER_SITES = {
+    juliang: {
+        api: 'https://api.juliang.live/api/provide/vod',
+        name: '巨量资源',
+    },
+    bfzyapi: {
+        api: 'https://bfzyapi.com/api.php/provide/vod',
+        name: '暴风资源',
+    },
+    lziapi: {
+        api: 'https://cj.lziapi.com/api.php/provide/vod',
+        name: '量子资源',
+    },
+    wujinapi: {
+        api: 'https://api.wujinapi.com/api.php/provide/vod',
+        name: '无尽资源',
+    },
+    guangsuapi: {
+        api: 'https://api.guangsuapi.com/api.php/provide/vod',
+        name: '光速资源',
+    },
+    jyzyapi: {
+        api: 'http://jyzyapi.com/api.php/provide/vod',
+        name: '金鹰资源',
+    },
+    subocaiji: {
+        api: 'https://subocaiji.com/api.php/provide/vod',
+        name: '素博资源',
+    },
+    hongniuzy2: {
+        api: 'https://www.hongniuzy2.com/api.php/provide/vod',
+        name: '红牛资源',
+    },
+    hhzyapi: {
+        api: 'https://hhzyapi.com/api.php/provide/vod',
+        name: '豪华资源',
+    },
+    huyaapi: {
+        api: 'https://www.huyaapi.com/api.php/provide/vod',
+        name: '虎牙资源',
+    },
+    jszyapi: {
+        api: 'https://jszyapi.com/api.php/provide/vod',
+        name: '极速资源',
+    },
+    ffzyapi: {
+        api: 'https://cj.ffzyapi.com/api.php/provide/vod',
+        name: '非凡资源',
+    },
+    moduapi: {
+        api: 'https://caiji.moduapi.cc/api.php/provide/vod',
+        name: '魔都资源',
+    },
+    rycjapi: {
+        api: 'https://cj.rycjapi.com/api.php/provide/vod',
+        name: '如意资源',
+    },
+    dyttzyapi: {
+        api: 'https://caiji.dyttzyapi.com/api.php/provide/vod',
+        name: '电影天堂资源',
+    },
+    ukuapi: {
+        api: 'https://api.ukuapi.com/api.php/provide/vod',
+        name: 'U酷资源',
+    },
     s360zy: {
         api: 'https://360zy.com/api.php/provide/vod',
         name: '360采集',
     },
-    hongniuzy2: {
-        api: 'https://www.hongniuzy2.com/api.php/provide/vod',
-        name: '红牛采集',
+    wujinapi2: {
+        api: 'https://api.wujinapi.net/api.php/provide/vod',
+        name: '无尽采集',
     },
-    apibdzy: {
-        api: 'https://api.apibdzy.com/api.php/provide/vod',
-        name: '百度采集',
+    wujinapi3: {
+        api: 'https://api.wujinapi.me/api.php/provide/vod',
+        name: '无尽采集2',
+    },
+    guangsuapi2: {
+        api: 'https://api.guangsuapi.com/api.php/provide/vod',
+        name: '光速采集',
+    },
+    xinlangapi: {
+        api: 'https://api.xinlangapi.com/xinlangapi.php/provide//vod',
+        name: '新浪采集',
     },
     ckzy: {
         api: 'https://ckzy.me/api.php/provide/vod',
@@ -21,7 +93,7 @@ const CUSTOMER_SITES = {
         api: 'http://cmsyun2.qijiyun.vip/api.php/provide/vod',
         name: '新4K采集',
     },
-    ffzyapi: {
+    ffzyapi2: {
         api: 'https://api.ffzyapi.com/api.php/provide/vod',
         name: '非凡资源',
     },
@@ -29,25 +101,25 @@ const CUSTOMER_SITES = {
         api: 'http://ffzy.tv/api.php/provide/vod',
         name: '影视 | 非凡[直连]',
     },
+    dyttzyapi2: {
+        api: 'http://caiji.dyttzyapi.com/api.php/provide/vod/at/m3u8',
+        name: '️天堂┃采集',
+    },
+    xinlangapi2: {
+        api: 'http://api.xinlangapi.com/xinlangapi.php/provide/vod',
+        name: '新浪资源(切)',
+    },
     ffzy5: {
         api: 'http://ffzy5.tv/api.php/provide/vod',
         name: '🍀┃非凡┃资源',
     },
-    wujinapi: {
-        api: 'https://api.wujinapi.com/api.php/provide/vod',
-        name: '无尽┃资源',
-    },
-    jyzyapi: {
+    jyzyapi2: {
         api: 'https://jyzyapi.com/provide/vod',
         name: '金鹰┃资源',
     },
     subocj: {
         api: 'https://subocj.com/api.php/provide/vod',
         name: '速播┃资源',
-    },
-    hhzyapi: {
-        api: 'https://hhzyapi.com/api.php/provide/vod',
-        name: '豪华┃资源',
     },
     maoyanapi: {
         api: 'https://api.maoyanapi.top/api.php/provide/vod',
@@ -56,10 +128,6 @@ const CUSTOMER_SITES = {
     bfzy2: {
         api: 'https://bfzy2.tv/api.php/provide/vod',
         name: '暴风┃资源',
-    },
-    gqc4: {
-        api: 'https://gqc4.top/api.php/provide/vod',
-        name: '共共┃青春',
     },
     qlys: {
         api: 'https://www.qlys.cc/api.php/provide/vod',
