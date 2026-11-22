@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-21T07:36:51.770Z",
-  "count": 35,
+  "updated": "2026-11-22T07:18:52.205Z",
+  "count": 34,
   "apis": [
     {
       "name": "巨量资源",
@@ -97,10 +97,6 @@
     {
       "name": "非凡资源",
       "api": "https://api.ffzyapi.com/api.php/provide/vod"
-    },
-    {
-      "name": "影视 | 非凡[直连]",
-      "api": "http://ffzy.tv/api.php/provide/vod"
     },
     {
       "name": "️天堂┃采集",

@@ -1,5 +1,5 @@
-// 由 maccms-source-checker 自动生成于 2026-11-21T07:36:51.770Z
-// 检测通过 35/53 个接口。仅用于个人学习研究。
+// 由 maccms-source-checker 自动生成于 2026-11-22T07:18:52.205Z
+// 检测通过 34/53 个接口。仅用于个人学习研究。
 const CUSTOMER_SITES = {
     juliang: {
         api: 'https://api.juliang.live/api/provide/vod',
@@ -96,10 +96,6 @@ const CUSTOMER_SITES = {
     ffzyapi2: {
         api: 'https://api.ffzyapi.com/api.php/provide/vod',
         name: '非凡资源',
-    },
-    ffzy: {
-        api: 'http://ffzy.tv/api.php/provide/vod',
-        name: '影视 | 非凡[直连]',
     },
     dyttzyapi2: {
         api: 'http://caiji.dyttzyapi.com/api.php/provide/vod/at/m3u8',

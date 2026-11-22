@@ -1,13 +1,13 @@
 {
-  "updated": "2026-11-21T07:36:51.770Z",
+  "updated": "2026-11-22T07:18:52.205Z",
   "mode": "full",
   "summary": {
     "total": 53,
-    "ok": 35,
+    "ok": 34,
     "searchEmpty": 11,
     "noPlayUrl": 1,
     "invalid": 0,
-    "unreachable": 6,
+    "unreachable": 7,
     "liveTotal": 6,
     "liveOk": 5
   },
@@ -20,10 +20,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 18,
       "sampleName": "三体与刘慈欣",
-      "searchMs": 1260,
+      "searchMs": 1007,
       "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:29.072Z",
+      "checkedAt": "2026-11-22T07:18:30.485Z",
       "key": "juliang"
     },
     {
@@ -34,10 +34,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 1000,
       "sampleName": "三体真人版",
-      "searchMs": 809,
+      "searchMs": 710,
       "playCheck": "fail(HTTP 404)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:29.073Z",
+      "checkedAt": "2026-11-22T07:18:30.487Z",
       "key": "bfzyapi"
     },
     {
@@ -48,10 +48,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 1000,
       "sampleName": "三体2023",
-      "searchMs": 408,
+      "searchMs": 420,
       "playCheck": "fail(HTTP 404)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:29.074Z",
+      "checkedAt": "2026-11-22T07:18:30.488Z",
       "key": "lziapi"
     },
     {
@@ -65,7 +65,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:29.075Z"
+      "checkedAt": "2026-11-22T07:18:30.489Z"
     },
     {
       "name": "闪电资源",
@@ -78,7 +78,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": true,
-      "checkedAt": "2026-11-21T07:36:29.076Z"
+      "checkedAt": "2026-11-22T07:18:30.490Z"
     },
     {
       "name": "无尽资源",
@@ -88,10 +88,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 6,
       "sampleName": "三体第一季",
-      "searchMs": 178,
+      "searchMs": 211,
       "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:29.077Z",
+      "checkedAt": "2026-11-22T07:18:30.491Z",
       "key": "wujinapi"
     },
     {
@@ -102,10 +102,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 157,
+      "searchMs": 315,
       "playCheck": "fail(UND_ERR_SOCKET)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:29.078Z",
+      "checkedAt": "2026-11-22T07:18:30.492Z",
       "key": "guangsuapi"
     },
     {
@@ -116,10 +116,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 336,
+      "searchMs": 310,
       "playCheck": "ok",
       "insecure": true,
-      "checkedAt": "2026-11-21T07:36:29.079Z",
+      "checkedAt": "2026-11-22T07:18:30.493Z",
       "key": "jyzyapi"
     },
     {
@@ -130,10 +130,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 319,
+      "searchMs": 276,
       "playCheck": "fail(UND_ERR_SOCKET)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:29.731Z",
+      "checkedAt": "2026-11-22T07:18:31.305Z",
       "key": "subocaiji"
     },
     {
@@ -144,10 +144,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 150,
+      "searchMs": 138,
       "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:29.752Z",
+      "checkedAt": "2026-11-22T07:18:31.422Z",
       "key": "hongniuzy2"
     },
     {
@@ -158,10 +158,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 282,
+      "searchMs": 268,
       "playCheck": "fail(UND_ERR_SOCKET)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:30.036Z",
+      "checkedAt": "2026-11-22T07:18:32.177Z",
       "key": "hhzyapi"
     },
     {
@@ -172,10 +172,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 280,
+      "searchMs": 145,
       "playCheck": "fail(UND_ERR_SOCKET)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:30.194Z",
+      "checkedAt": "2026-11-22T07:18:32.179Z",
       "key": "huyaapi"
     },
     {
@@ -186,10 +186,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 8,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 118,
+      "searchMs": 188,
       "playCheck": "fail(UND_ERR_SOCKET)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:30.885Z",
+      "checkedAt": "2026-11-22T07:18:33.023Z",
       "key": "jszyapi"
     },
     {
@@ -200,10 +200,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 3,
       "sampleName": "三体第一季",
-      "searchMs": 109,
+      "searchMs": 78,
       "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:31.253Z",
+      "checkedAt": "2026-11-22T07:18:33.110Z",
       "key": "ffzyapi"
     },
     {
@@ -214,10 +214,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 3,
       "sampleName": "三体修大闹西方魔法学院",
-      "searchMs": 296,
+      "searchMs": 211,
       "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:31.352Z",
+      "checkedAt": "2026-11-22T07:18:33.144Z",
       "key": "moduapi"
     },
     {
@@ -228,10 +228,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 7,
       "sampleName": "三体剧版",
-      "searchMs": 466,
+      "searchMs": 408,
       "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:31.614Z",
+      "checkedAt": "2026-11-22T07:18:33.240Z",
       "key": "rycjapi"
     },
     {
@@ -242,10 +242,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 2,
       "sampleName": "三体2023",
-      "searchMs": 202,
+      "searchMs": 70,
       "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:32.059Z",
+      "checkedAt": "2026-11-22T07:18:33.764Z",
       "key": "dyttzyapi"
     },
     {
@@ -259,7 +259,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:32.062Z"
+      "checkedAt": "2026-11-22T07:18:34.284Z"
     },
     {
       "name": "U酷资源",
@@ -269,10 +269,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 5,
       "sampleName": "三体 第一季",
-      "searchMs": 118,
+      "searchMs": 136,
       "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:32.331Z",
+      "checkedAt": "2026-11-22T07:18:34.405Z",
       "key": "ukuapi"
     },
     {
@@ -286,7 +286,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:33.076Z"
+      "checkedAt": "2026-11-22T07:18:34.780Z"
     },
     {
       "name": "360采集",
@@ -296,10 +296,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 6,
       "sampleName": "三体",
-      "searchMs": 462,
+      "searchMs": 455,
       "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:33.122Z",
+      "checkedAt": "2026-11-22T07:18:34.862Z",
       "key": "s360zy"
     },
     {
@@ -310,10 +310,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 6,
       "sampleName": "三体第一季",
-      "searchMs": 125,
+      "searchMs": 143,
       "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:33.221Z",
+      "checkedAt": "2026-11-22T07:18:35.026Z",
       "key": "wujinapi2"
     },
     {
@@ -324,10 +324,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 6,
       "sampleName": "三体第一季",
-      "searchMs": 139,
+      "searchMs": 142,
       "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:33.416Z",
+      "checkedAt": "2026-11-22T07:18:35.396Z",
       "key": "wujinapi3"
     },
     {
@@ -338,10 +338,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 29,
+      "searchMs": 19,
       "playCheck": "fail(UND_ERR_SOCKET)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:33.496Z",
+      "checkedAt": "2026-11-22T07:18:35.823Z",
       "key": "guangsuapi2"
     },
     {
@@ -352,10 +352,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 300,
+      "searchMs": 253,
       "playCheck": "fail(UND_ERR_SOCKET)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:34.011Z",
+      "checkedAt": "2026-11-22T07:18:35.884Z",
       "key": "xinlangapi"
     },
     {
@@ -366,10 +366,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 2,
       "sampleName": "妖艳西游记",
-      "searchMs": 126,
+      "searchMs": 129,
       "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:34.197Z",
+      "checkedAt": "2026-11-22T07:18:36.051Z",
       "key": "ckzy"
     },
     {
@@ -383,7 +383,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:34.336Z"
+      "checkedAt": "2026-11-22T07:18:36.387Z"
     },
     {
       "name": "新4K采集",
@@ -393,10 +393,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 1,
       "sampleName": "后西游记 第一季",
-      "searchMs": 287,
+      "searchMs": 356,
       "playCheck": "no-m3u8(mp4)",
       "insecure": true,
-      "checkedAt": "2026-11-21T07:36:35.154Z",
+      "checkedAt": "2026-11-22T07:18:36.515Z",
       "key": "qijiyun"
     },
     {
@@ -407,10 +407,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 3,
       "sampleName": "三体第一季",
-      "searchMs": 192,
+      "searchMs": 105,
       "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:35.163Z",
+      "checkedAt": "2026-11-22T07:18:36.520Z",
       "key": "ffzyapi2"
     },
     {
@@ -424,7 +424,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:35.232Z"
+      "checkedAt": "2026-11-22T07:18:36.633Z"
     },
     {
       "name": "快帆",
@@ -437,7 +437,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:35.361Z"
+      "checkedAt": "2026-11-22T07:18:36.865Z"
     },
     {
       "name": "乐视",
@@ -450,7 +450,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:35.404Z"
+      "checkedAt": "2026-11-22T07:18:36.983Z"
     },
     {
       "name": "影视 | 天涯",
@@ -463,21 +463,20 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": true,
-      "checkedAt": "2026-11-21T07:36:35.471Z"
+      "checkedAt": "2026-11-22T07:18:37.066Z"
     },
     {
       "name": "影视 | 非凡[直连]",
       "api": "http://ffzy.tv/api.php/provide/vod",
       "upstream": "xiaoma",
-      "status": "ok",
-      "reason": "搜索/详情/播放地址均正常",
-      "total": 3,
-      "sampleName": "三体第一季",
-      "searchMs": 378,
-      "playCheck": "fail(HTTP 403)",
+      "status": "unreachable",
+      "reason": "列表接口失败(HTTP 403)",
+      "total": null,
+      "sampleName": "",
+      "searchMs": null,
+      "playCheck": "skipped",
       "insecure": true,
-      "checkedAt": "2026-11-21T07:36:36.003Z",
-      "key": "ffzy"
+      "checkedAt": "2026-11-22T07:18:37.090Z"
     },
     {
       "name": "影视 | 建安",
@@ -485,12 +484,12 @@
       "upstream": "xiaoma",
       "status": "no_play_url",
       "reason": "详情未返回可播放地址",
-      "total": 65485,
-      "sampleName": "开心锤锤",
-      "searchMs": 880,
+      "total": 65490,
+      "sampleName": "声生不息天涯共此时舞台纯享版",
+      "searchMs": 877,
       "playCheck": "skipped",
       "insecure": true,
-      "checkedAt": "2026-11-21T07:36:36.012Z"
+      "checkedAt": "2026-11-22T07:18:37.106Z"
     },
     {
       "name": "️天堂┃采集",
@@ -500,10 +499,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 2,
       "sampleName": "三体2023",
-      "searchMs": 95,
+      "searchMs": 76,
       "playCheck": "fail(HTTP 403)",
       "insecure": true,
-      "checkedAt": "2026-11-21T07:36:36.065Z",
+      "checkedAt": "2026-11-22T07:18:37.126Z",
       "key": "dyttzyapi2"
     },
     {
@@ -514,10 +513,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 117,
+      "searchMs": 72,
       "playCheck": "fail(UND_ERR_SOCKET)",
       "insecure": true,
-      "checkedAt": "2026-11-21T07:36:36.412Z",
+      "checkedAt": "2026-11-22T07:18:37.276Z",
       "key": "xinlangapi2"
     },
     {
@@ -528,10 +527,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 3,
       "sampleName": "三体第一季",
-      "searchMs": 379,
+      "searchMs": 61,
       "playCheck": "fail(HTTP 403)",
       "insecure": true,
-      "checkedAt": "2026-11-21T07:36:36.498Z",
+      "checkedAt": "2026-11-22T07:18:37.492Z",
       "key": "ffzy5"
     },
     {
@@ -545,7 +544,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:36.550Z"
+      "checkedAt": "2026-11-22T07:18:37.808Z"
     },
     {
       "name": "茅台┃资源",
@@ -558,7 +557,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:36.825Z"
+      "checkedAt": "2026-11-22T07:18:38.319Z"
     },
     {
       "name": "牛牛┃资源",
@@ -571,7 +570,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:37.011Z"
+      "checkedAt": "2026-11-22T07:18:38.464Z"
     },
     {
       "name": "丫丫┃资源",
@@ -584,7 +583,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:37.137Z"
+      "checkedAt": "2026-11-22T07:18:38.585Z"
     },
     {
       "name": "金鹰┃资源",
@@ -594,10 +593,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 97,
+      "searchMs": 76,
       "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:37.494Z",
+      "checkedAt": "2026-11-22T07:18:38.597Z",
       "key": "jyzyapi2"
     },
     {
@@ -608,10 +607,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 11,
       "sampleName": "三体第二季（预告片）",
-      "searchMs": 723,
+      "searchMs": 754,
       "playCheck": "fail(UND_ERR_SOCKET)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:37.605Z",
+      "checkedAt": "2026-11-22T07:18:38.636Z",
       "key": "subocj"
     },
     {
@@ -625,7 +624,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:37.613Z"
+      "checkedAt": "2026-11-22T07:18:38.908Z"
     },
     {
       "name": "第一┃资源",
@@ -638,7 +637,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:37.740Z"
+      "checkedAt": "2026-11-22T07:18:38.989Z"
     },
     {
       "name": "猫眼┃资源",
@@ -648,10 +647,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 4,
       "sampleName": "网飞版三体第一季-1080P",
-      "searchMs": 271,
+      "searchMs": 267,
       "playCheck": "fail(ENOTFOUND)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:38.020Z",
+      "checkedAt": "2026-11-22T07:18:39.011Z",
       "key": "maoyanapi"
     },
     {
@@ -662,10 +661,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 1000,
       "sampleName": "三体真人版",
-      "searchMs": 367,
+      "searchMs": 288,
       "playCheck": "fail(HTTP 404)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:38.180Z",
+      "checkedAt": "2026-11-22T07:18:39.119Z",
       "key": "bfzy2"
     },
     {
@@ -679,7 +678,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:38.222Z"
+      "checkedAt": "2026-11-22T07:18:39.270Z"
     },
     {
       "name": "共共┃青春",
@@ -692,7 +691,7 @@
       "searchMs": null,
       "playCheck": "skipped",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:38.564Z"
+      "checkedAt": "2026-11-22T07:18:39.431Z"
     },
     {
       "name": "麒麟┃影音",
@@ -702,10 +701,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 9,
       "sampleName": "后西游记第一季",
-      "searchMs": 871,
+      "searchMs": 753,
       "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:38.650Z",
+      "checkedAt": "2026-11-22T07:18:39.701Z",
       "key": "qlys"
     },
     {
@@ -716,10 +715,10 @@
       "reason": "搜索/详情/播放地址均正常",
       "total": 3,
       "sampleName": "三体修大闹西方魔法学院",
-      "searchMs": 362,
+      "searchMs": 311,
       "playCheck": "ok",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:38.863Z",
+      "checkedAt": "2026-11-22T07:18:39.911Z",
       "key": "mdzyapi"
     },
     {
@@ -728,12 +727,12 @@
       "upstream": "fengdou",
       "status": "ok",
       "reason": "搜索/详情/播放地址均正常",
-      "total": 126081,
-      "sampleName": "凤起微月",
-      "searchMs": 279,
+      "total": 126146,
+      "sampleName": "11月21日 26-27赛季英超第11轮 托特纳姆热刺VS伊普斯维奇",
+      "searchMs": 224,
       "playCheck": "fail(HTTP 403)",
       "insecure": false,
-      "checkedAt": "2026-11-21T07:36:39.356Z",
+      "checkedAt": "2026-11-22T07:18:40.541Z",
       "key": "zuidapi"
     }
   ],
@@ -744,13 +743,13 @@
       "rawUrl": "https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u",
       "kind": "m3u",
       "epg": "",
-      "channels": 318,
-      "groups": 10,
-      "probeOk": 7,
+      "channels": 313,
+      "groups": 11,
+      "probeOk": 8,
       "probeTotal": 8,
-      "probeRatio": 88,
+      "probeRatio": 100,
       "status": "ok",
-      "ms": 8352,
+      "ms": 6488,
       "comment": "vbskycn/iptv（10k star）每日自动聚合更新，央视+卫视+地方频道"
     },
     {
@@ -759,13 +758,13 @@
       "rawUrl": "https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/bbxx365_lite.txt",
       "kind": "txt",
       "epg": "",
-      "channels": 7072,
+      "channels": 7064,
       "groups": 25,
-      "probeOk": 3,
+      "probeOk": 6,
       "probeTotal": 8,
-      "probeRatio": 38,
+      "probeRatio": 75,
       "status": "ok",
-      "ms": 5627,
+      "ms": 6809,
       "comment": "collect-tv-txt 聚合轻量版，25 个分组，含央视/卫视/地方/港澳台"
     },
     {
@@ -780,7 +779,7 @@
       "probeTotal": 8,
       "probeRatio": 50,
       "status": "ok",
-      "ms": 9954,
+      "ms": 9019,
       "comment": "iptv-org（144k star）中国频道集合，含省级台与网络频道"
     },
     {
@@ -795,7 +794,7 @@
       "probeTotal": 8,
       "probeRatio": 13,
       "status": "ok",
-      "ms": 5617,
+      "ms": 4637,
       "comment": "YueChan/Live 维护的广东电信直播列表（http 频道占比过低时自动剔除）"
     },
     {
@@ -816,7 +815,7 @@
       "probeTotal": 8,
       "probeRatio": 13,
       "status": "ok",
-      "ms": 4379,
+      "ms": 2317,
       "comment": "肥羊直播（外部域名，不走 GitHub 加速；IPv6 网络环境可用性最佳，附带 EPG）"
     }
   ]
