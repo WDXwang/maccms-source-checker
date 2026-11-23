@@ -1,7 +1,7 @@
 {
   "name": "星辰TVBox 每日实测源（点播+直播）",
-  "notes": "检测时间 2026-11-22T07:18:52.205Z；点播 34 个实测可用接口，直播 5 个可用源。仅供学习研究，请勿商用。",
-  "updated": "2026-11-22T07:18:52.205Z",
+  "notes": "检测时间 2026-11-23T08:02:46.901Z；点播 31 个实测可用接口，直播 5 个可用源。仅供学习研究，请勿商用。",
+  "updated": "2026-11-23T08:02:46.901Z",
   "sites": [
     {
       "key": "s1",
@@ -221,24 +221,6 @@
     },
     {
       "key": "s25",
-      "name": "️天堂┃采集",
-      "type": 1,
-      "api": "http://caiji.dyttzyapi.com/api.php/provide/vod/at/m3u8",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s26",
-      "name": "新浪资源(切)",
-      "type": 1,
-      "api": "http://api.xinlangapi.com/xinlangapi.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s27",
       "name": "🍀┃非凡┃资源",
       "type": 1,
       "api": "http://ffzy5.tv/api.php/provide/vod",
@@ -247,7 +229,7 @@
       "filterable": 1
     },
     {
-      "key": "s28",
+      "key": "s26",
       "name": "金鹰┃资源",
       "type": 1,
       "api": "https://jyzyapi.com/provide/vod",
@@ -256,7 +238,7 @@
       "filterable": 1
     },
     {
-      "key": "s29",
+      "key": "s27",
       "name": "速播┃资源",
       "type": 1,
       "api": "https://subocj.com/api.php/provide/vod",
@@ -265,7 +247,7 @@
       "filterable": 1
     },
     {
-      "key": "s30",
+      "key": "s28",
       "name": "猫眼┃资源",
       "type": 1,
       "api": "https://api.maoyanapi.top/api.php/provide/vod",
@@ -274,7 +256,7 @@
       "filterable": 1
     },
     {
-      "key": "s31",
+      "key": "s29",
       "name": "暴风┃资源",
       "type": 1,
       "api": "https://bfzy2.tv/api.php/provide/vod",
@@ -283,16 +265,7 @@
       "filterable": 1
     },
     {
-      "key": "s32",
-      "name": "麒麟┃影音",
-      "type": 1,
-      "api": "https://www.qlys.cc/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
-    },
-    {
-      "key": "s33",
+      "key": "s30",
       "name": "🥬魔都资源",
       "type": 1,
       "api": "https://www.mdzyapi.com/api.php/provide/vod",
@@ -301,7 +274,7 @@
       "filterable": 1
     },
     {
-      "key": "s34",
+      "key": "s31",
       "name": "🥬最大资源",
       "type": 1,
       "api": "https://api.zuidapi.com/api.php/provide/vod",
@@ -312,17 +285,17 @@
   ],
   "lives": [
     {
-      "name": "聚合直播IPTV4（313台）",
+      "name": "聚合直播IPTV4（339台）",
       "type": 0,
       "url": "https://ghfast.top/https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u"
     },
     {
-      "name": "直播聚合lite（7064台）",
+      "name": "直播聚合lite（7202台）",
       "type": 0,
       "url": "https://ghfast.top/https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/bbxx365_lite.txt"
     },
     {
-      "name": "全球中文台（513台）",
+      "name": "全球中文台（517台）",
       "type": 0,
       "url": "https://ghfast.top/https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn.m3u"
     },
