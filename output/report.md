@@ -1,67 +1,67 @@
 # 采集接口与直播源检测报告
 
-- **检测时间**：2026-11-23T08:02:46.901Z
+- **检测时间**：2026-11-24T10:17:50.162Z
 - **模式**：full（含播放流抽查）
 - **点播结果**：31 个可用 / 共检测 48 个接口
 - **直播结果**：5 个可用 / 共检测 6 个源
 
 | 状态 | 名称 | 接口地址 | 片库总数 | 搜索耗时 | 播放抽查 | 来源 |
 |---|---|---|---|---|---|---|
-| ✅ | 巨量资源 | `https://api.juliang.live/api/provide/vod` | 18 | 791ms | ❌ fail(HTTP 403) | applecms-sources |
-| ✅ | 暴风资源 | `https://bfzyapi.com/api.php/provide/vod` | 1000 | 734ms | ❌ fail(HTTP 404) | applecms-sources |
-| ✅ | 量子资源 | `https://cj.lziapi.com/api.php/provide/vod` | 1000 | 399ms | ❌ fail(HTTP 404) | applecms-sources |
+| ✅ | 巨量资源 | `https://api.juliang.live/api/provide/vod` | 18 | 1029ms | ❌ fail(HTTP 403) | applecms-sources |
+| ✅ | 暴风资源 | `https://bfzyapi.com/api.php/provide/vod` | 1000 | 807ms | ❌ fail(HTTP 404) | applecms-sources |
+| ✅ | 量子资源 | `https://cj.lziapi.com/api.php/provide/vod` | 1000 | 380ms | ❌ fail(HTTP 404) | applecms-sources |
 | ⚠️ 搜索空 | 索尼资源 | `https://suoniapi.com/api.php/provide/vod` | - | -ms | — | applecms-sources |
 | ⚠️ 搜索空 | 闪电资源 | `http://sdzyapi.com/api.php/provide/vod` | - | -ms | — | applecms-sources |
-| ✅ | 无尽资源 | `https://api.wujinapi.com/api.php/provide/vod` | 6 | 224ms | ❌ fail(HTTP 403) | applecms-sources |
-| ✅ | 光速资源 | `https://api.guangsuapi.com/api.php/provide/vod` | 11 | 304ms | ❌ fail(UND_ERR_SOCKET) | applecms-sources |
-| ✅ | 金鹰资源 | `http://jyzyapi.com/api.php/provide/vod` | 11 | 258ms | ✅ | applecms-sources |
-| ✅ | 素博资源 | `https://subocaiji.com/api.php/provide/vod` | 11 | 281ms | ❌ fail(UND_ERR_SOCKET) | applecms-sources |
-| ✅ | 红牛资源 | `https://www.hongniuzy2.com/api.php/provide/vod` | 11 | 152ms | ✅ | applecms-sources |
-| ✅ | 豪华资源 | `https://hhzyapi.com/api.php/provide/vod` | 11 | 265ms | ❌ fail(UND_ERR_SOCKET) | applecms-sources |
-| ✅ | 虎牙资源 | `https://www.huyaapi.com/api.php/provide/vod` | 11 | 275ms | ❌ fail(UND_ERR_SOCKET) | applecms-sources |
-| ✅ | 极速资源 | `https://jszyapi.com/api.php/provide/vod` | 8 | 145ms | ❌ fail(UND_ERR_SOCKET) | applecms-sources |
-| ✅ | 非凡资源 | `https://cj.ffzyapi.com/api.php/provide/vod` | 3 | 116ms | ❌ fail(HTTP 403) | applecms-sources |
-| ✅ | 魔都资源 | `https://caiji.moduapi.cc/api.php/provide/vod` | 3 | 149ms | ✅ | applecms-sources |
-| ✅ | 如意资源 | `https://cj.rycjapi.com/api.php/provide/vod` | 7 | 409ms | ✅ | applecms-sources |
-| ✅ | 电影天堂资源 | `https://caiji.dyttzyapi.com/api.php/provide/vod` | 2 | 88ms | ❌ fail(HTTP 403) | applecms-sources |
+| ✅ | 无尽资源 | `https://api.wujinapi.com/api.php/provide/vod` | 6 | 257ms | ❌ fail(HTTP 403) | applecms-sources |
+| ✅ | 光速资源 | `https://api.guangsuapi.com/api.php/provide/vod` | 11 | 308ms | ❌ fail(UND_ERR_SOCKET) | applecms-sources |
+| ✅ | 金鹰资源 | `http://jyzyapi.com/api.php/provide/vod` | 11 | 263ms | ✅ | applecms-sources |
+| ✅ | 素博资源 | `https://subocaiji.com/api.php/provide/vod` | 11 | 314ms | ❌ fail(UND_ERR_SOCKET) | applecms-sources |
+| ✅ | 红牛资源 | `https://www.hongniuzy2.com/api.php/provide/vod` | 11 | 223ms | ✅ | applecms-sources |
+| ✅ | 豪华资源 | `https://hhzyapi.com/api.php/provide/vod` | 11 | 341ms | ❌ fail(UND_ERR_SOCKET) | applecms-sources |
+| ✅ | 虎牙资源 | `https://www.huyaapi.com/api.php/provide/vod` | 11 | 271ms | ❌ fail(UND_ERR_SOCKET) | applecms-sources |
+| ✅ | 极速资源 | `https://jszyapi.com/api.php/provide/vod` | 8 | 210ms | ❌ fail(UND_ERR_SOCKET) | applecms-sources |
+| ✅ | 非凡资源 | `https://cj.ffzyapi.com/api.php/provide/vod` | 3 | 94ms | ❌ fail(HTTP 403) | applecms-sources |
+| ✅ | 魔都资源 | `https://caiji.moduapi.cc/api.php/provide/vod` | 3 | 381ms | ✅ | applecms-sources |
+| ✅ | 如意资源 | `https://cj.rycjapi.com/api.php/provide/vod` | 7 | 426ms | ✅ | applecms-sources |
+| ✅ | 电影天堂资源 | `https://caiji.dyttzyapi.com/api.php/provide/vod` | 2 | 93ms | ❌ fail(HTTP 403) | applecms-sources |
 | ⚠️ 搜索空 | 天涯资源 | `https://tyyszyapi.com/api.php/provide/vod` | - | -ms | — | applecms-sources |
-| ✅ | U酷资源 | `https://api.ukuapi.com/api.php/provide/vod` | 5 | 104ms | ❌ fail(HTTP 403) | applecms-sources |
+| ✅ | U酷资源 | `https://api.ukuapi.com/api.php/provide/vod` | 5 | 122ms | ❌ fail(HTTP 403) | applecms-sources |
 | ❌ 不可达 | 百度资源 | `https://api.apibdzy.com/api.php/provide/vod` | - | -ms | — | applecms-sources |
-| ✅ | 360采集 | `https://360zy.com/api.php/provide/vod` | 6 | 456ms | ✅ | tvbox-config |
-| ✅ | 无尽采集 | `https://api.wujinapi.net/api.php/provide/vod` | 6 | 135ms | ❌ fail(HTTP 403) | tvbox-config |
-| ✅ | 无尽采集2 | `https://api.wujinapi.me/api.php/provide/vod` | 6 | 129ms | ❌ fail(HTTP 403) | tvbox-config |
+| ✅ | 360采集 | `https://360zy.com/api.php/provide/vod` | 6 | 447ms | ✅ | tvbox-config |
+| ✅ | 无尽采集 | `https://api.wujinapi.net/api.php/provide/vod` | 6 | 277ms | ❌ fail(HTTP 403) | tvbox-config |
+| ✅ | 无尽采集2 | `https://api.wujinapi.me/api.php/provide/vod` | 6 | 291ms | ❌ fail(HTTP 403) | tvbox-config |
 | ✅ | 光速采集 | `https://api.guangsuapi.com/api.php/provide/vod` | 11 | 24ms | ❌ fail(UND_ERR_SOCKET) | tvbox-config |
-| ✅ | 新浪采集 | `https://api.xinlangapi.com/xinlangapi.php/provide//vod` | 11 | 285ms | ❌ fail(UND_ERR_SOCKET) | tvbox-config |
-| ✅ | ckzy采集 | `https://ckzy.me/api.php/provide/vod` | 2 | 154ms | ✅ | tvbox-config |
+| ✅ | 新浪采集 | `https://api.xinlangapi.com/xinlangapi.php/provide//vod` | 11 | 267ms | ❌ fail(UND_ERR_SOCKET) | tvbox-config |
+| ✅ | ckzy采集 | `https://ckzy.me/api.php/provide/vod` | 2 | 129ms | ✅ | tvbox-config |
 | ⚠️ 搜索空 | 纯净采集 | `https://api.wsyzy.net/api.php/provide/vod` | - | -ms | — | tvbox-config |
-| ✅ | 新4K采集 | `http://cmsyun2.qijiyun.vip/api.php/provide/vod` | 1 | 281ms | ❌ no-m3u8(mp4) | tvbox-config |
-| ✅ | 非凡资源 | `https://api.ffzyapi.com/api.php/provide/vod` | 3 | 88ms | ❌ fail(HTTP 403) | tvbox-sub |
+| ✅ | 新4K采集 | `http://cmsyun2.qijiyun.vip/api.php/provide/vod` | 1 | 261ms | ❌ no-m3u8(mp4) | tvbox-config |
+| ✅ | 非凡资源 | `https://api.ffzyapi.com/api.php/provide/vod` | 3 | 130ms | ❌ fail(HTTP 403) | tvbox-sub |
 | ❌ 不可达 | 海外看 | `https://haiwaikan.com/api.php/provide/vod` | - | -ms | — | gao-0825 |
 | ❌ 不可达 | 快帆 | `https://api.kuaifan.tv/api.php/provide/vod` | - | -ms | — | gao-0825 |
 | ❌ 不可达 | 乐视 | `https://leshiapi.com/api.php/provide/vod` | - | -ms | — | gao-0825 |
-| ✅ | 🍀┃非凡┃资源 | `http://ffzy5.tv/api.php/provide/vod` | 3 | 93ms | ❌ fail(HTTP 403) | eryuehong |
+| ✅ | 🍀┃非凡┃资源 | `http://ffzy5.tv/api.php/provide/vod` | 3 | 83ms | ❌ fail(HTTP 403) | eryuehong |
 | ⚠️ 搜索空 | 极速┃零一 | `https://ww96.taiee.xyz/api.php/provide/vod` | - | -ms | — | canglan |
 | ⚠️ 搜索空 | 茅台┃资源 | `https://caiji.maotaizy.cc/api.php/provide/vod` | - | -ms | — | canglan |
 | ⚠️ 搜索空 | 牛牛┃资源 | `https://api.niuniuzy.me/api.php/provide/vod` | - | -ms | — | canglan |
 | ⚠️ 搜索空 | 丫丫┃资源 | `https://cj.yayazy.net/api.php/provide/vod` | - | -ms | — | canglan |
-| ✅ | 金鹰┃资源 | `https://jyzyapi.com/provide/vod` | 11 | 80ms | ✅ | canglan |
-| ✅ | 速播┃资源 | `https://subocj.com/api.php/provide/vod` | 11 | 734ms | ❌ fail(UND_ERR_SOCKET) | canglan |
+| ✅ | 金鹰┃资源 | `https://jyzyapi.com/provide/vod` | 11 | 105ms | ✅ | canglan |
+| ✅ | 速播┃资源 | `https://subocj.com/api.php/provide/vod` | 11 | 807ms | ❌ fail(UND_ERR_SOCKET) | canglan |
 | ❌ 不可达 | 飘零┃影院 | `https://p2100.net/api.php/provide/vod` | - | -ms | — | canglan |
 | ⚠️ 搜索空 | 第一┃资源 | `https://caiji.diyizy.net/api.php/provide/vod` | - | -ms | — | canglan |
-| ✅ | 猫眼┃资源 | `https://api.maoyanapi.top/api.php/provide/vod` | 4 | 299ms | ❌ fail(ENOTFOUND) | canglan |
-| ✅ | 暴风┃资源 | `https://bfzy2.tv/api.php/provide/vod` | 1000 | 313ms | ❌ fail(HTTP 404) | canglan |
+| ✅ | 猫眼┃资源 | `https://api.maoyanapi.top/api.php/provide/vod` | 4 | 265ms | ❌ fail(ENOTFOUND) | canglan |
+| ✅ | 暴风┃资源 | `https://bfzy2.tv/api.php/provide/vod` | 1000 | 596ms | ❌ fail(HTTP 404) | canglan |
 | ⚠️ 搜索空 | ok┃资源 | `https://okzyw.cc/api.php/provide/vod` | - | -ms | — | canglan |
 | ❌ 不可达 | 共共┃青春 | `https://gqc4.top/api.php/provide/vod` | - | -ms | — | canglan |
 | ❌ 不可达 | 麒麟┃影音 | `https://www.qlys.cc/api.php/provide/vod` | - | -ms | — | canglan |
-| ✅ | 🥬魔都资源 | `https://www.mdzyapi.com/api.php/provide/vod` | 3 | 163ms | ✅ | fengdou |
-| ✅ | 🥬最大资源 | `https://api.zuidapi.com/api.php/provide/vod` | 126196 | 231ms | ❌ fail(HTTP 403) | fengdou |
+| ✅ | 🥬魔都资源 | `https://www.mdzyapi.com/api.php/provide/vod` | 3 | 179ms | ✅ | fengdou |
+| ✅ | 🥬最大资源 | `https://api.zuidapi.com/api.php/provide/vod` | 126225 | 341ms | ❌ fail(HTTP 403) | fengdou |
 
 ## 直播（TV）源检测
 
 | 状态 | 名称 | 频道/分组/抽样 | 频道可达率 | 原始地址 |
 |---|---|---|---|---|
-| ✅ | 聚合直播IPTV4 | 339 台 / 11 组 / 抽样 7/8 | 88% | https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u |
-| ✅ | 直播聚合lite | 7202 台 / 26 组 / 抽样 4/8 | 50% | https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/bbxx365_lite.txt |
+| ✅ | 聚合直播IPTV4 | 345 台 / 11 组 / 抽样 7/8 | 88% | https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u |
+| ✅ | 直播聚合lite | 7356 台 / 26 组 / 抽样 5/8 | 63% | https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/bbxx365_lite.txt |
 | ✅ | 全球中文台 | 517 台 / 1 组 / 抽样 4/8 | 50% | https://raw.githubusercontent.com/iptv-org/iptv/master/streams/cn.m3u |
 | ✅ | 广东电信IPTV | 130 台 / 3 组 / 抽样 1/8 | 13% | https://raw.githubusercontent.com/YueChan/Live/main/GNTV.m3u |
 | ⚠️ 组播为主 | 北京联通IPTV | 仅 0 个 http 频道（多为组播/特殊协议，公网不可播） | — | https://raw.githubusercontent.com/YueChan/Live/main/IPTV.m3u |

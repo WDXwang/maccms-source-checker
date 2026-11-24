@@ -1,4 +1,4 @@
-// 由 maccms-source-checker 自动生成于 2026-11-23T08:02:46.901Z
+// 由 maccms-source-checker 自动生成于 2026-11-24T10:17:50.162Z
 // 检测通过 31/48 个接口。仅用于个人学习研究。
 const CUSTOMER_SITES = {
     juliang: {

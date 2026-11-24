@@ -1,7 +1,7 @@
 {
   "name": "星辰TVBox 每日实测源（点播+直播）",
-  "notes": "检测时间 2026-11-23T08:02:46.901Z；点播 31 个实测可用接口，直播 5 个可用源。仅供学习研究，请勿商用。",
-  "updated": "2026-11-23T08:02:46.901Z",
+  "notes": "检测时间 2026-11-24T10:17:50.162Z；点播 31 个实测可用接口，直播 5 个可用源。仅供学习研究，请勿商用。",
+  "updated": "2026-11-24T10:17:50.162Z",
   "sites": [
     {
       "key": "s1",
@@ -285,12 +285,12 @@
   ],
   "lives": [
     {
-      "name": "聚合直播IPTV4（339台）",
+      "name": "聚合直播IPTV4（345台）",
       "type": 0,
       "url": "https://ghfast.top/https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u"
     },
     {
-      "name": "直播聚合lite（7202台）",
+      "name": "直播聚合lite（7356台）",
       "type": 0,
       "url": "https://ghfast.top/https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/bbxx365_lite.txt"
     },
