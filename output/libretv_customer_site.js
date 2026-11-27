@@ -1,5 +1,5 @@
-// 由 maccms-source-checker 自动生成于 2026-11-26T08:47:36.162Z
-// 检测通过 31/48 个接口。仅用于个人学习研究。
+// 由 maccms-source-checker 自动生成于 2026-11-27T08:57:16.603Z
+// 检测通过 32/48 个接口。仅用于个人学习研究。
 const CUSTOMER_SITES = {
     juliang: {
         api: 'https://api.juliang.live/api/provide/vod',
@@ -116,6 +116,10 @@ const CUSTOMER_SITES = {
     bfzy2: {
         api: 'https://bfzy2.tv/api.php/provide/vod',
         name: '暴风┃资源',
+    },
+    qlys: {
+        api: 'https://www.qlys.cc/api.php/provide/vod',
+        name: '麒麟┃影音',
     },
     mdzyapi: {
         api: 'https://www.mdzyapi.com/api.php/provide/vod',

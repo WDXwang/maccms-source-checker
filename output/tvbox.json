@@ -1,7 +1,7 @@
 {
   "name": "星辰TVBox 每日实测源（点播+直播）",
-  "notes": "检测时间 2026-11-26T08:47:36.162Z；点播 31 个实测可用接口，直播 5 个可用源。仅供学习研究，请勿商用。",
-  "updated": "2026-11-26T08:47:36.162Z",
+  "notes": "检测时间 2026-11-27T08:57:16.603Z；点播 32 个实测可用接口，直播 5 个可用源。仅供学习研究，请勿商用。",
+  "updated": "2026-11-27T08:57:16.603Z",
   "sites": [
     {
       "key": "s1",
@@ -266,6 +266,15 @@
     },
     {
       "key": "s30",
+      "name": "麒麟┃影音",
+      "type": 1,
+      "api": "https://www.qlys.cc/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "s31",
       "name": "🥬魔都资源",
       "type": 1,
       "api": "https://www.mdzyapi.com/api.php/provide/vod",
@@ -274,7 +283,7 @@
       "filterable": 1
     },
     {
-      "key": "s31",
+      "key": "s32",
       "name": "🥬最大资源",
       "type": 1,
       "api": "https://api.zuidapi.com/api.php/provide/vod",
@@ -285,14 +294,14 @@
   ],
   "lives": [
     {
-      "name": "聚合直播IPTV4（338台）",
-      "type": 0,
-      "url": "https://ghfast.top/https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u"
-    },
-    {
-      "name": "直播聚合lite（7338台）",
+      "name": "直播聚合lite（7358台）",
       "type": 0,
       "url": "https://ghfast.top/https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/bbxx365_lite.txt"
+    },
+    {
+      "name": "聚合直播IPTV4（332台）",
+      "type": 0,
+      "url": "https://ghfast.top/https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u"
     },
     {
       "name": "全球中文台（518台）",

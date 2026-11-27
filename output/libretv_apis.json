@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-26T08:47:36.162Z",
-  "count": 31,
+  "updated": "2026-11-27T08:57:16.603Z",
+  "count": 32,
   "apis": [
     {
       "name": "巨量资源",
@@ -117,6 +117,10 @@
     {
       "name": "暴风┃资源",
       "api": "https://bfzy2.tv/api.php/provide/vod"
+    },
+    {
+      "name": "麒麟┃影音",
+      "api": "https://www.qlys.cc/api.php/provide/vod"
     },
     {
       "name": "🥬魔都资源",
